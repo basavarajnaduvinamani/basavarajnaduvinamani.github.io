@@ -4,8 +4,9 @@ const dayMs = 86_400_000;
 const dayFormat = new Intl.DateTimeFormat('en', { dateStyle: 'medium', timeZone: 'UTC' });
 const monthFormat = new Intl.DateTimeFormat('en', { month: 'short', timeZone: 'UTC' });
 const winterStart = Date.UTC(2026, 9, 1);
-const winterLength = 90;
-export const winterPeriod = dayFormat.formatRange(winterStart, winterStart + (winterLength - 1) * dayMs);
+const winterEnd = Date.UTC(2026, 11, 31);
+const winterLength = (winterEnd - winterStart) / dayMs + 1;
+export const winterPeriod = dayFormat.formatRange(winterStart, winterEnd);
 let calendarRequest;
 
 async function readCalendar(url) {
