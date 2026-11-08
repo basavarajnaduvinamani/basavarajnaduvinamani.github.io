@@ -13,7 +13,11 @@
   <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/fonts.css">
   <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/project-views.css">
+  <link rel="stylesheet" href="/assets/extras.css">
+  <link rel="stylesheet" href="/assets/shell.css">
   <script type="module" src="/assets/app.js"></script>
+  <script type="module" src="/assets/shell.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -21,13 +25,30 @@
     <a class="brand-wordmark" href="#home" aria-label="Basavaraj home">Basavaraj</a>
     <div class="nav-right">
       <nav id="navigation" aria-label="Main navigation">
-        <a href="#home" data-route="home">Home</a>
-        <a href="#projects" data-route="projects">Projects</a>
-        <a href="#research" data-route="research">Research</a>
-        <a href="#contact" data-route="contact">let's talk</a>
+        <a href="#home" data-route="home" aria-label="Home" aria-current="page" class="active">
+          <svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>
+          <span class="nav-label">Home</span>
+        </a>
+        <a href="#projects" data-route="projects" aria-label="Projects">
+          <svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5zM3 12l9 5 9-5M3 16l9 5 9-5"/></svg>
+          <span class="nav-label">Projects</span>
+        </a>
+        <a href="#research" data-route="research" aria-label="Research">
+          <svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zM3 10h18"/></svg>
+          <span class="nav-label">Research</span>
+        </a>
+        <a href="#notes" data-route="notes" aria-label="Notes">
+          <svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 6a8 8 0 0 0-9-2v15a8 8 0 0 1 9 2 8 8 0 0 1 9-2V4a8 8 0 0 0-9 2zm0 0v15"/></svg>
+          <span class="nav-label">Notes</span>
+        </a>
+        <a href="#contact" data-route="contact" aria-label="Let's talk">
+          <svg class="nav-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7ZM11 13 22 2"/></svg>
+          <span class="nav-label"><span class="nav-contact-desktop">let's talk</span><span class="nav-contact-mobile">Talk</span></span>
+        </a>
       </nav>
-      <button class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false"></button>
-      <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="navigation"></button>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+        <span class="theme-thumb" aria-hidden="true"></span>
+      </button>
     </div>
   </header>
   <main id="main" tabindex="-1"></main>
@@ -35,11 +56,13 @@
     <p class="footer-kicker">Have an idea?</p>
     <h2>Let's build something together.</h2>
     <a class="pill light" href="#contact">Let's Talk <span data-icon="arrow"></span></a>
+    <svg class="footer-landscape" aria-hidden="true" focusable="false" viewBox="0 0 440 105">
+      <path d="M13 89c32-4 48-4 73 0 25 5 53 7 89 1 30-5 54-6 84-2 34 4 52 5 79 0 31-6 52-6 88-1"/>
+      <path d="M38 84V31m0 2-13 20h8l-14 20h38L43 53h8L38 33ZM76 88V49m0 2-9 14h5L61 79h30L80 65h5l-9-14ZM378 86V26m0 2-14 22h9l-17 23h44l-17-23h9l-14-22ZM409 86V54m0 2-7 11h5l-9 13h22l-9-13h5l-7-11Z"/>
+      <path d="M122 87V24m-9 0h18l-3 14h-12l-3-14Zm2-1 7-6 7 6m-14 64h14M278 87V40m-7 0h14l-2 11h-10l-2-11Zm1-1 6-5 6 5m-11 48h10M180 83v-9m42 9v-9m-48-10h54v11h-54zm3 5h48m-45-5v-8h42v8"/>
+      <path d="M154 35h6m-3-3v6m171 8h6m-3-3v6m-93-29h6m-3-3v6m-147 8h4m-2-2v4m266 1h4m-2-2v4"/>
+    </svg>
     <p class="footer-credit">Thoughtfully built by <span class="signature">Basavaraj</span></p>
   </footer>
-  <dialog id="research-dialog" aria-labelledby="dialog-title">
-    <button class="dialog-close icon-button" aria-label="Close research details"></button>
-    <div id="dialog-content"></div>
-  </dialog>
 </body>
 </html>

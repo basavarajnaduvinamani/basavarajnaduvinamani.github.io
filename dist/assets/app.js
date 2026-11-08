@@ -1,11 +1,11 @@
-import { profile, experience, education, achievements, projects, research } from './data.js';
+import { profile, experience, education, achievements } from './data.js';
+import { renderWorkView, bindWorkView } from './project-views.js';
+import { renderNotes, bindNotes } from './notes.js';
 
 const paths = {
   arrow: '<path d="M5 12h14m-6-6 6 6-6 6"/>',
   external: '<path d="M7 17 17 7M7 7h10v10"/>',
   chevron: '<path d="m6 9 6 6 6-6"/>',
-  close: '<path d="m6 6 12 12M6 18 18 6"/>',
-  menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>',
   moon: '<path d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z"/>',
   github: '<path d="M9 19c-4.3 1.3-4.3-2.2-6-2.6M15 22v-3.7a3.2 3.2 0 0 0-.9-2.5c3-.3 6.1-1.5 6.1-6.9A5.4 5.4 0 0 0 18.7 5a5 5 0 0 0-.1-3.8s-1.2-.4-4 1.5a13.7 13.7 0 0 0-7.2 0c-2.8-1.9-4-1.5-4-1.5A5 5 0 0 0 3.3 5a5.4 5.4 0 0 0-1.5 3.9c0 5.4 3.1 6.6 6.1 6.9a3.2 3.2 0 0 0-.9 2.5V22" transform="translate(1 0) scale(.95)"/>',
@@ -16,8 +16,9 @@ const icon = name => `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" st
 const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const tagList = tags => `<div class="tags">${tags.map(x => `<span class="tag">${escapeHTML(x)}</span>`).join('')}</div>`;
 const main = document.querySelector('main');
-const dialog = document.querySelector('#research-dialog');
-const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const themeToggle = document.querySelector('.theme-toggle');
+const themeThumb = themeToggle.querySelector('.theme-thumb');
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let typingTimer;
 let renderGeneration = 0;
 let activityPromise;
@@ -52,9 +53,9 @@ function currentAge() {
 
 function homePage() {
   return `<div class="home-shell"><div class="home-frame">
-    <div class="hero reveal"><div class="banner"><video class="video-light" src="/assets/winter-light.mp4" autoplay loop muted playsinline aria-label="Winter landscape with falling snow"></video><video class="video-dark" src="/assets/winter-dark.mp4" autoplay loop muted playsinline aria-label="Winter landscape at night"></video></div><div class="avatar-wrap"><img src="/assets/profile.png" alt="Basavaraj's abstract profile artwork" width="112" height="112"></div><div class="hero-actions"><a class="pill primary" href="#research">View Research ${icon('arrow')}</a></div></div>
+    <div class="hero reveal"><div class="banner"><video class="video-light" data-src="/assets/winter-light.mp4" poster="/assets/winter-light-poster.jpg" preload="metadata" loop muted playsinline aria-label="Winter landscape with falling snow"></video><video class="video-dark" data-src="/assets/winter-dark.mp4" poster="/assets/winter-dark-poster.jpg" preload="metadata" loop muted playsinline aria-label="Winter landscape at night"></video></div><button class="avatar-wrap" type="button" aria-label="Animate portrait"><img src="/assets/profile.png" alt="Basavaraj's abstract profile artwork" width="112" height="112"></button><div class="hero-actions"><a class="pill primary" href="#projects">View Projects ${icon('arrow')}</a><a class="pill light" href="#research">View Research ${icon('arrow')}</a></div></div>
     <section class="identity reveal"><div class="name-line"><h1>${profile.name}</h1><span class="verified" title="Personal profile">${icon('verified')}</span></div><div class="role-line"><span id="typed-role">AI Researcher</span><span class="typing-caret" aria-hidden="true"></span></div><p class="location">${currentAge()}, India</p></section>
-    <section class="home-section"><h2>Winter Arc</h2><p class="calendar-context">Public GitHub activity · the last 90 days</p><div class="dashed-card activity-card" id="winter-calendar"><p class="load-error">Loading GitHub activity…</p></div></section>
+    <section class="home-section"><h2>Winter Arc</h2><p class="calendar-context">Public GitHub activity · 90-day snapshot</p><div class="dashed-card activity-card" id="winter-calendar"><p class="load-error">Loading GitHub activity…</p></div></section>
     <section class="home-section"><h2>Who is Basavaraj?</h2><div class="body-copy"><p>TL;DR learned by hacking around on the internet.</p><p>I work on <strong>computer vision, multimodal language models, and reliable AI systems</strong>. From probing where a model starts to hallucinate to building a defect-detection pipeline, I like work that connects <strong>understanding how things work with making them useful</strong>.</p><p>I'm an <strong>AI Research Intern at the Walmart Center for Tech Excellence</strong> and a Master's student in <strong>Data Science and AI at IIT Madras</strong>, with an exchange semester at the University of Birmingham. Previously, I worked on multimodal hallucinations at <strong>AI4Bharat</strong>.</p><p class="quote">“The best way to predict the future is to invent it.” — Alan Kay</p></div></section>
     <section class="home-section"><h2>Tech Stack</h2>${techStrip()}</section>
     <section class="home-section"><h2>Research & Engineering</h2><div class="dashed-card callout"><p>My work spans model evaluation, computer vision, grounded LLM systems, and AI agents. I build pipelines and evaluations that make model behaviour easier to inspect and understand.</p><a class="pill light" href="#projects">View Projects ${icon('arrow')}</a></div></section>
@@ -66,43 +67,58 @@ function homePage() {
   </div></div>`;
 }
 
-function projectLinks(item, className = '') {
-  const links = [
-    [item.demo, 'Live Demo'],
-    [item.url, 'View Repository'],
-  ];
-  return links.filter(([url]) => url).map(([url, label]) =>
-    `<a class="${className}" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">${label} ${icon('external')}</a>`
-  ).join('');
-}
-
-function projectPage() {
-  return `<div class="page-shell"><div class="page-heading"><h1>Selected Projects</h1><p>Things I've built across AI evaluation, grounded language models, and applied machine learning.</p></div><div class="project-grid">${projects.map(project => `<article class="project-card" style="--project-accent:${project.accent}"><div class="project-preview"><div class="preview-window"><div class="window-bar"><i></i><i></i><i></i></div><div class="window-label">${project.title}</div><div class="pipeline">${project.steps.map((step, i) => `${i ? icon('arrow') : ''}<span class="pipeline-step">${step}</span>`).join('')}</div></div><span class="preview-caption">Project workflow illustration</span></div><div class="project-body"><div class="project-eyebrow">${project.category}</div><h2>${project.title}</h2><p>${project.description}</p>${tagList(project.tags)}<div class="project-bottom"><span>${project.date}</span><div class="project-links">${projectLinks(project)}</div></div></div></article>`).join('')}</div></div>`;
-}
-
-function researchPage() {
-  return `<div class="page-shell"><div class="page-heading"><h1>Research Archive</h1><p>Exploring what models learn, where they fail, and how to make them more reliable.</p></div><div class="folder-grid">${research.map(item => `<button class="folder-card" style="--folder-color:${item.color}" data-research="${item.id}" aria-label="Open ${item.title} research details"><span class="folder-tab"></span><span class="folder-back"></span><span class="folder-sheet" aria-hidden="true"><div class="research-lines"><i></i><i></i><i></i><i></i></div><p>${item.tags.join(' · ')}</p></span><span class="folder-sheet"><h3>${item.title}</h3><p>${item.description}</p></span><span class="folder-front"><h2>${item.label}</h2><p>${item.subtitle}</p>${icon('arrow')}</span></button>`).join('')}</div><p class="research-note">These are research projects and internship contributions. Project details and available source code are included inside each folder.</p></div>`;
-}
-
 function contactPage() {
-  return `<div class="page-shell contact-shell"><div class="dashed-card contact-card"><h1>Let's work on something interesting.</h1><p>For research conversations, engineering opportunities, or a chat about something I've built, you can reach me by email or on LinkedIn. You can also explore my work on GitHub.</p><div class="contact-actions"><a class="pill light" href="mailto:${profile.email}">Email ${icon('arrow')}</a><a class="pill primary" href="${profile.linkedin}" target="_blank" rel="noopener noreferrer">${icon('linkedin')} Connect on LinkedIn ${icon('external')}</a><a class="pill light" href="${profile.github}" target="_blank" rel="noopener noreferrer">${icon('github')} GitHub ${icon('external')}</a></div></div></div>`;
+  return `<section class="contact-view">
+    <div class="contact-form-card">
+      <h1>Send a Message</h1>
+      <p class="extras-intro">For research conversations, engineering opportunities, or questions about a project, write a note and open it in your email app.</p>
+      <form class="contact-form">
+        <label>Name <input name="name" autocomplete="name" required maxlength="80"></label>
+        <label>Email <input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+        <label>Message <textarea name="message" required maxlength="1000" rows="5"></textarea></label>
+        <button class="pill light" type="submit">Open email draft ${icon('arrow')}</button>
+        <p class="contact-status" role="status"></p>
+      </form>
+    </div>
+    <div class="contact-socials">
+      <p>Or reach me directly</p>
+      ${socialLinks()}
+      <a class="contact-email" href="mailto:${profile.email}">${profile.email}</a>
+    </div>
+  </section>`;
 }
 
-function setTheme(theme) {
-  document.body.classList.toggle('dark', theme === 'dark');
-  try { localStorage.setItem('basavaraj-palak-theme', theme); } catch {}
-  document.querySelector('.theme-toggle').innerHTML = icon(theme === 'dark' ? 'moon' : 'sun');
-  document.querySelector('.theme-toggle').setAttribute('aria-pressed', String(theme === 'dark'));
-  document.querySelectorAll('video').forEach(video => {
-    const visible = video.classList.contains(theme === 'dark' ? 'video-dark' : 'video-light');
-    if (reduceMotion || !visible) video.pause();
+function bindContact() {
+  const form = main.querySelector('.contact-form');
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const fields = new FormData(form);
+    const subject = encodeURIComponent(`Portfolio inquiry from ${fields.get('name')}`);
+    const body = encodeURIComponent(`${fields.get('message')}\n\nFrom ${fields.get('name')} (${fields.get('email')})`);
+    form.querySelector('.contact-status').textContent = 'Finish and send the draft in your email app.';
+    location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
+  });
+}
+
+function setTheme(theme, remember = false) {
+  const dark = theme === 'dark';
+  document.body.classList.toggle('dark', dark);
+  if (remember) {
+    try { localStorage.setItem('basavaraj-palak-theme', theme); } catch {}
+  }
+  themeThumb.innerHTML = icon(dark ? 'moon' : 'sun');
+  themeToggle.setAttribute('aria-pressed', String(dark));
+  main.querySelectorAll('.banner video').forEach(video => {
+    const visible = video.classList.contains(dark ? 'video-dark' : 'video-light');
+    if (visible && !video.hasAttribute('src')) video.src = video.dataset.src;
+    if (reduceMotion.matches || !visible) video.pause();
     else video.play().catch(() => {});
   });
 }
 
 function typeRoles() {
   clearTimeout(typingTimer);
-  if (reduceMotion) return;
+  if (reduceMotion.matches) return;
   let roleIndex = 0, length = profile.roles[0].length, deleting = true;
   const tick = () => {
     const target = document.querySelector('#typed-role');
@@ -136,6 +152,8 @@ async function renderCalendars(generation) {
     const cell = (day, winter = false) => `<span class="heat-cell ${winter ? (day.contributionCount ? 'active' : '') : 'l' + level(day.contributionCount)}" data-tooltip="${day.contributionCount} contributions on ${day.date}" title="${day.contributionCount} contributions on ${day.date}"></span>`;
     const legend = '<span class="legend">Less <i></i><i></i> More</span>';
     document.querySelector('#winter-calendar').innerHTML = `<div class="calendar-overflow"><div class="winter-grid">${latest.map(day => cell(day, true)).join('')}</div></div><div class="calendar-footer"><span>${latest.filter(day => day.contributionCount > 0).length} / ${latest.length} days building</span>${legend}</div>`;
+    const winterScroll = document.querySelector('#winter-calendar .calendar-overflow');
+    winterScroll.scrollLeft = winterScroll.scrollWidth;
     const months = [];
     for (const day of days) { const label = new Date(day.date + 'T12:00:00Z').toLocaleString('en', { month: 'short', timeZone: 'UTC' }); if (months.at(-1) !== label) months.push(label); }
     document.querySelector('#github-calendar').innerHTML = `<div class="calendar-overflow"><div class="month-labels">${months.map(month => `<span>${month}</span>`).join('')}</div><div class="github-grid">${days.map(day => cell(day)).join('')}</div></div><div class="calendar-footer"><a href="${profile.github}" target="_blank" rel="noopener noreferrer">${calendar.totalContributions.toLocaleString()} contributions in the last year</a>${legend}</div><p style="color:var(--muted);font-size:10px;margin-top:10px">Snapshot through ${days.at(-1).date}</p>`;
@@ -145,55 +163,68 @@ async function renderCalendars(generation) {
   }
 }
 
-function openResearch(id) {
-  const item = research.find(entry => entry.id === id);
-  if (!item) return;
-  document.querySelector('#dialog-content').innerHTML = `<div class="project-eyebrow">${item.label}</div><h2 id="dialog-title">${item.title}</h2><p class="dialog-subtitle">${item.subtitle} · ${item.period}</p><p>${item.description}</p><ul>${item.details.map(detail => `<li>${detail}</li>`).join('')}</ul><p><strong>Advisor:</strong> ${item.advisor}</p>${tagList(item.tags)}<div class="project-links">${projectLinks(item, 'pill primary')}</div>`;
-  dialog.showModal();
-}
-
-function render() {
-  if (dialog.open) dialog.close();
+function render(event) {
   clearTimeout(typingTimer);
-  const route = ['home', 'projects', 'research', 'contact'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'home';
+  const route = location.hash.slice(1);
+  const workView = renderWorkView(route);
+  const notesView = renderNotes(route);
+  const section = workView || notesView ? route.split('/')[0] : route === 'contact' ? 'contact' : 'home';
   const generation = ++renderGeneration;
-  main.innerHTML = ({ home: homePage, projects: projectPage, research: researchPage, contact: contactPage })[route]();
-  document.title = `${route === 'home' ? '' : route[0].toUpperCase() + route.slice(1) + ' | '}${profile.name}`;
-  document.querySelectorAll('[data-route]').forEach(link => {
-    link.classList.toggle('active', link.dataset.route === route);
-    if (link.dataset.route === route) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
-  });
-  document.querySelector('nav').classList.remove('open');
-  document.querySelector('.menu-toggle').setAttribute('aria-expanded', 'false');
-  if (route === 'home') {
+
+  main.innerHTML = workView ?? notesView ?? (section === 'contact' ? contactPage() : homePage());
+  const heading = main.querySelector('h1');
+  document.title = section === 'home' || !heading ? profile.name : `${heading.textContent} | ${profile.name}`;
+  for (const link of document.querySelectorAll('[data-route]')) {
+    const active = link.dataset.route === section;
+    link.classList.toggle('active', active);
+    if (active) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  }
+
+  if (workView) bindWorkView(main);
+  if (notesView) bindNotes(main);
+  if (section === 'contact') bindContact();
+  if (section === 'home') {
     typeRoles();
     renderCalendars(generation);
     setTheme(document.body.classList.contains('dark') ? 'dark' : 'light');
-    document.querySelectorAll('.experience-list details').forEach(detail => detail.addEventListener('toggle', () => {
-      if (detail.open) document.querySelectorAll('.experience-list details').forEach(other => { if (other !== detail) other.open = false; });
-    }));
+    const rows = main.querySelectorAll('.experience-list details');
+    for (const row of rows) {
+      row.addEventListener('toggle', () => {
+        if (row.open) for (const other of rows) if (other !== row) other.open = false;
+      });
+    }
   }
-  document.querySelectorAll('[data-research]').forEach(button => button.addEventListener('click', () => openResearch(button.dataset.research)));
   window.scrollTo({ top: 0, behavior: 'instant' });
+  if (event && heading) {
+    heading.tabIndex = -1;
+    heading.focus({ preventScroll: true });
+  }
 }
 
 document.querySelectorAll('[data-icon]').forEach(element => { element.innerHTML = icon(element.dataset.icon); });
-document.querySelector('.menu-toggle').innerHTML = icon('menu');
 document.querySelector('.skip-link').addEventListener('click', event => {
   event.preventDefault();
   main.focus({ preventScroll: true });
   main.scrollIntoView({ behavior: 'instant' });
 });
-document.querySelector('.dialog-close').innerHTML = icon('close');
-document.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
-dialog.addEventListener('click', event => { if (event.target === dialog) { const box = dialog.getBoundingClientRect(); if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close(); } });
-document.querySelector('.theme-toggle').addEventListener('click', () => setTheme(document.body.classList.contains('dark') ? 'light' : 'dark'));
-document.querySelector('.menu-toggle').addEventListener('click', event => {
-  const open = document.querySelector('nav').classList.toggle('open');
-  event.currentTarget.setAttribute('aria-expanded', String(open));
+themeToggle.addEventListener('click', () => {
+  setTheme(document.body.classList.contains('dark') ? 'light' : 'dark', true);
 });
-let initialTheme = 'light';
-try { initialTheme = localStorage.getItem('basavaraj-palak-theme') || 'light'; } catch {}
+reduceMotion.addEventListener('change', () => {
+  const typedRole = main.querySelector('#typed-role');
+  if (typedRole) {
+    clearTimeout(typingTimer);
+    typedRole.textContent = profile.roles[0];
+    typeRoles();
+  }
+  setTheme(document.body.classList.contains('dark') ? 'dark' : 'light');
+});
+let initialTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+try {
+  const saved = localStorage.getItem('basavaraj-palak-theme');
+  if (saved === 'dark' || saved === 'light') initialTheme = saved;
+} catch {}
 setTheme(initialTheme);
 window.addEventListener('hashchange', render);
 render();
