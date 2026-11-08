@@ -1,3 +1,4 @@
+import { renderActivity } from './activity.js';
 import { profile, experience, education, achievements } from './data.js';
 import { renderWorkView, bindWorkView } from './project-views.js';
 import { renderNotes, bindNotes } from './notes.js';
@@ -20,8 +21,6 @@ const themeToggle = document.querySelector('.theme-toggle');
 const themeThumb = themeToggle.querySelector('.theme-thumb');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let typingTimer;
-let renderGeneration = 0;
-let activityPromise;
 
 function socialLinks() {
   return `<div class="social-links"><a href="${profile.github}" target="_blank" rel="noopener noreferrer">${icon('github')} GitHub</a><a href="${profile.linkedin}" target="_blank" rel="noopener noreferrer">${icon('linkedin')} LinkedIn</a></div>`;
@@ -55,14 +54,14 @@ function homePage() {
   return `<div class="home-shell"><div class="home-frame">
     <div class="hero reveal"><div class="banner"><video class="video-light" data-src="/assets/winter-light.mp4" poster="/assets/winter-light-poster.jpg" preload="metadata" loop muted playsinline aria-label="Winter landscape with falling snow"></video><video class="video-dark" data-src="/assets/winter-dark.mp4" poster="/assets/winter-dark-poster.jpg" preload="metadata" loop muted playsinline aria-label="Winter landscape at night"></video></div><button class="avatar-wrap" type="button" aria-label="Animate portrait"><img src="/assets/profile.png" alt="Basavaraj's abstract profile artwork" width="112" height="112"></button><div class="hero-actions"><a class="pill primary" href="#projects">View Projects ${icon('arrow')}</a><a class="pill light" href="#research">View Research ${icon('arrow')}</a></div></div>
     <section class="identity reveal"><div class="name-line"><h1>${profile.name}</h1><span class="verified" title="Personal profile">${icon('verified')}</span></div><div class="role-line"><span id="typed-role">AI Researcher</span><span class="typing-caret" aria-hidden="true"></span></div><p class="location">${currentAge()}, India</p></section>
-    <section class="home-section"><h2>Winter Arc</h2><p class="calendar-context">Public GitHub activity · 90-day snapshot</p><div class="dashed-card activity-card" id="winter-calendar"><p class="load-error">Loading GitHub activity…</p></div></section>
+    <section class="home-section"><h2>Winter Arc</h2><p class="calendar-context">Public GitHub activity · 90 days</p><div class="dashed-card activity-card" id="winter-calendar" aria-busy="true"><p class="load-error">Loading GitHub activity…</p></div></section>
     <section class="home-section"><h2>Who is Basavaraj?</h2><div class="body-copy"><p>TL;DR learned by hacking around on the internet.</p><p>I work on <strong>computer vision, multimodal language models, and reliable AI systems</strong>. From probing where a model starts to hallucinate to building a defect-detection pipeline, I like work that connects <strong>understanding how things work with making them useful</strong>.</p><p>I'm an <strong>AI Research Intern at the Walmart Center for Tech Excellence</strong> and a Master's student in <strong>Data Science and AI at IIT Madras</strong>, with an exchange semester at the University of Birmingham. Previously, I worked on multimodal hallucinations at <strong>AI4Bharat</strong>.</p><p class="quote">“The best way to predict the future is to invent it.” — Alan Kay</p></div></section>
     <section class="home-section"><h2>Tech Stack</h2>${techStrip()}</section>
     <section class="home-section"><h2>Research & Engineering</h2><div class="dashed-card callout"><p>My work spans model evaluation, computer vision, grounded LLM systems, and AI agents. I build pipelines and evaluations that make model behaviour easier to inspect and understand.</p><a class="pill light" href="#projects">View Projects ${icon('arrow')}</a></div></section>
     <section class="home-section"><h2>Experience</h2>${experienceCards()}</section>
     <section class="home-section"><h2>Education</h2>${educationCards()}</section>
     <section class="home-section" id="achievements"><h2>Achievements</h2>${achievementCards()}</section>
-    <section class="home-section"><h2>GitHub Activity</h2><div class="dashed-card activity-card" id="github-calendar"><p class="load-error">Loading GitHub activity…</p></div></section>
+    <section class="home-section"><h2>GitHub Activity</h2><div class="dashed-card activity-card" id="github-calendar" aria-busy="true"><p class="load-error">Loading GitHub activity…</p></div></section>
     <section class="home-section" aria-label="Social profiles">${socialLinks()}</section>
   </div></div>`;
 }
@@ -134,42 +133,12 @@ function typeRoles() {
   typingTimer = setTimeout(tick, 1800);
 }
 
-function loadActivity() {
-  activityPromise ||= fetch('/assets/github-activity.json').then(response => {
-    if (!response.ok) throw new Error('Activity unavailable');
-    return response.json();
-  }).then(data => data.data.user.contributionsCollection.contributionCalendar);
-  return activityPromise;
-}
-
-async function renderCalendars(generation) {
-  try {
-    const calendar = await loadActivity();
-    if (generation !== renderGeneration) return;
-    const days = calendar.weeks.flatMap(week => week.contributionDays);
-    const latest = days.slice(-90);
-    const level = count => count > 12 ? 4 : count > 6 ? 3 : count > 2 ? 2 : count > 0 ? 1 : 0;
-    const cell = (day, winter = false) => `<span class="heat-cell ${winter ? (day.contributionCount ? 'active' : '') : 'l' + level(day.contributionCount)}" data-tooltip="${day.contributionCount} contributions on ${day.date}" title="${day.contributionCount} contributions on ${day.date}"></span>`;
-    const legend = '<span class="legend">Less <i></i><i></i> More</span>';
-    document.querySelector('#winter-calendar').innerHTML = `<div class="calendar-overflow"><div class="winter-grid">${latest.map(day => cell(day, true)).join('')}</div></div><div class="calendar-footer"><span>${latest.filter(day => day.contributionCount > 0).length} / ${latest.length} days building</span>${legend}</div>`;
-    const winterScroll = document.querySelector('#winter-calendar .calendar-overflow');
-    winterScroll.scrollLeft = winterScroll.scrollWidth;
-    const months = [];
-    for (const day of days) { const label = new Date(day.date + 'T12:00:00Z').toLocaleString('en', { month: 'short', timeZone: 'UTC' }); if (months.at(-1) !== label) months.push(label); }
-    document.querySelector('#github-calendar').innerHTML = `<div class="calendar-overflow"><div class="month-labels">${months.map(month => `<span>${month}</span>`).join('')}</div><div class="github-grid">${days.map(day => cell(day)).join('')}</div></div><div class="calendar-footer"><a href="${profile.github}" target="_blank" rel="noopener noreferrer">${calendar.totalContributions.toLocaleString()} contributions in the last year</a>${legend}</div><p style="color:var(--muted);font-size:10px;margin-top:10px">Snapshot through ${days.at(-1).date}</p>`;
-  } catch {
-    if (generation !== renderGeneration) return;
-    for (const id of ['winter-calendar', 'github-calendar']) document.querySelector('#' + id).innerHTML = `<p class="load-error">Activity is unavailable. <a href="${profile.github}" target="_blank" rel="noopener noreferrer">View my GitHub profile instead.</a></p>`;
-  }
-}
-
 function render(event) {
   clearTimeout(typingTimer);
   const route = location.hash.slice(1);
   const workView = renderWorkView(route);
   const notesView = renderNotes(route);
   const section = workView || notesView ? route.split('/')[0] : route === 'contact' ? 'contact' : 'home';
-  const generation = ++renderGeneration;
 
   main.innerHTML = workView ?? notesView ?? (section === 'contact' ? contactPage() : homePage());
   const heading = main.querySelector('h1');
@@ -186,7 +155,7 @@ function render(event) {
   if (section === 'contact') bindContact();
   if (section === 'home') {
     typeRoles();
-    renderCalendars(generation);
+    renderActivity(main, profile.github);
     setTheme(document.body.classList.contains('dark') ? 'dark' : 'light');
     const rows = main.querySelectorAll('.experience-list details');
     for (const row of rows) {
