@@ -50,6 +50,11 @@
   border-radius: 3px;
 }
 
+.activity-card .activity-unrecorded {
+  border: 1px dashed var(--line);
+  background: transparent;
+}
+
 .activity-card .heat-cell:hover,
 .activity-card .heat-cell:focus-visible {
   outline: 2px solid var(--text);
