@@ -3,6 +3,9 @@ const savedCalendar = '/assets/github-activity.json';
 const dayMs = 86_400_000;
 const dayFormat = new Intl.DateTimeFormat('en', { dateStyle: 'medium', timeZone: 'UTC' });
 const monthFormat = new Intl.DateTimeFormat('en', { month: 'short', timeZone: 'UTC' });
+const winterStart = Date.UTC(2026, 9, 1);
+const winterLength = 90;
+export const winterPeriod = dayFormat.formatRange(winterStart, winterStart + (winterLength - 1) * dayMs);
 let calendarRequest;
 
 async function readCalendar(url) {
@@ -37,10 +40,11 @@ async function loadCalendar() {
   return saved ? { days: saved, source: 'saved' } : null;
 }
 
-function cell(day, index, size, winter = false) {
+function cell(day, selected, winter = false) {
   const level = winter ? (day.count > 0 ? 4 : 0) : day.level;
-  const label = `${dayFormat.format(new Date(day.date))} · ${day.count} ${day.count === 1 ? 'contribution' : 'contributions'}`;
-  return `<button type="button" class="heat-cell l${level}" tabindex="${index === size - 1 ? 0 : -1}" aria-label="${label}"></button>`;
+  const count = day.count === null ? 'No GitHub data' : `${day.count} ${day.count === 1 ? 'contribution' : 'contributions'}`;
+  const label = `${dayFormat.format(new Date(day.date))} · ${count}`;
+  return `<button type="button" class="heat-cell l${level}${day.count === null ? ' activity-unrecorded' : ''}" tabindex="${selected ? 0 : -1}" aria-label="${label}"></button>`;
 }
 
 function legend(levels) {
@@ -55,11 +59,16 @@ function footer(summary, levels, latest, source) {
 }
 
 function renderWinter(card, days, source) {
-  const latest = days.slice(-90);
-  const active = latest.filter(day => day.count > 0).length;
+  const byDate = new Map(days.map(day => [day.date, day]));
+  const windowDays = Array.from({ length: winterLength }, (_, index) => {
+    const date = new Date(winterStart + index * dayMs).toISOString().slice(0, 10);
+    return byDate.get(date) ?? { date, count: null };
+  });
+  const active = windowDays.filter(day => day.count > 0).length;
+  const selected = Math.max(0, windowDays.findLastIndex(day => day.count !== null));
   card.innerHTML = `<div class="calendar-overflow">
-    <div class="winter-grid" role="group" aria-label="Last 90 days of GitHub activity">${latest.map((day, index) => cell(day, index, latest.length, true)).join('')}</div>
-    </div>${footer(`${active} / ${latest.length} active days`, [0, 4], latest.at(-1).date, source)}`;
+    <div class="winter-grid" role="group" aria-label="Winter Arc, ${winterPeriod}">${windowDays.map((day, index) => cell(day, index === selected, true)).join('')}</div>
+    </div>${footer(`${active} / ${winterLength} active days`, [0, 4], days.at(-1).date, source)}`;
 }
 
 function renderYear(card, days, source, profileUrl) {
@@ -76,7 +85,7 @@ function renderYear(card, days, source, profileUrl) {
   card.innerHTML = `<div class="calendar-overflow">
     <div class="calendar-year" style="--calendar-columns:${columns}">
       <div class="month-labels" aria-hidden="true">${months.join('')}</div>
-      <div class="github-grid" role="group" aria-label="Last year of GitHub activity">${leading}${days.map((day, index) => cell(day, index, days.length)).join('')}</div>
+      <div class="github-grid" role="group" aria-label="Last year of GitHub activity">${leading}${days.map((day, index) => cell(day, index === days.length - 1)).join('')}</div>
     </div>
     </div>${footer(summary, [0, 1, 2, 3, 4], days.at(-1).date, source)}`;
 }
@@ -86,8 +95,8 @@ function bindCalendar(card) {
   const grid = scroll.querySelector('[role="group"]');
   const cells = [...grid.querySelectorAll('.heat-cell')];
   const detail = card.querySelector('.calendar-day-detail');
-  let current = cells.at(-1);
-  scroll.scrollLeft = scroll.scrollWidth;
+  let current = grid.querySelector('[tabindex="0"]');
+  scroll.scrollLeft = current.getBoundingClientRect().right - scroll.getBoundingClientRect().right;
 
   function select(button) {
     if (!button.matches('.heat-cell')) return;
