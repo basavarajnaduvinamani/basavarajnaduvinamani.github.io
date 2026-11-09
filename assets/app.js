@@ -1,6 +1,6 @@
 import { renderActivity, winterPeriod } from './activity.js?v=winter-2';
-import { profile, experience, education, achievements } from './data.js?v=bio-5';
-import { renderWorkView, bindWorkView } from './project-views.js?v=nda-1';
+import { profile, experience, education, achievements } from './data.js?v=fact-1';
+import { renderWorkView, bindWorkView } from './project-views.js?v=fact-1';
 import { renderNotes, bindNotes } from './notes.js';
 
 const paths = {
