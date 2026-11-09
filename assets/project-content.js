@@ -93,7 +93,7 @@ export const projectContent = [
       alt: 'CounterPrior research site showing the study sections and held-out sound findings.',
     },
     caseStudy: {
-      overview: 'The LLaVA image work began during my AI4Bharat internship from November 2025 to February 2026. The verified image rerun and the Gemma and Qwen audio-video experiments were independent follow-up work in November 2026.',
+      overview: 'The LLaVA image work began at AI4Bharat, IIT Madras, from November 2025 to February 2026. In November 2026 I extended it to audio and video with the Gemma and Qwen experiments.',
       problem: 'A plausible answer can come from language patterns even when the image, audio, or video provides contrary evidence. A useful evaluation has to test what changes when the input changes.',
       approach: [
         'Used absent-object questions on POPE, an object hallucination benchmark, to compare hidden-state probes with model confidence.',
