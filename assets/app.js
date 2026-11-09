@@ -74,7 +74,7 @@ function contactPage() {
       <form class="contact-form">
         <label>Full name <input name="name" autocomplete="name" required maxlength="80"></label>
         <label>Email address <input name="email" type="email" autocomplete="email" required maxlength="120"></label>
-        <fieldset class="topic-chips"><legend>What is this about?</legend><div>${topics.map((topic, index) => `<label class="topic-chip"><input type="radio" name="topic" value="${topic}"${index === 0 ? ' required' : ''}><span>${topic}</span></label>`).join('')}</div></fieldset>
+        <fieldset class="topic-chips"><legend>What is this about? <span class="optional">(optional)</span></legend><div>${topics.map((topic, index) => `<label class="topic-chip"><input type="radio" name="topic" value="${topic}"><span>${topic}</span></label>`).join('')}</div></fieldset>
         <label>Message <textarea name="message" required maxlength="1000" rows="5"></textarea></label>
         <input type="checkbox" name="botcheck" class="contact-trap" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button class="pill light" type="submit">Send message</button>
@@ -98,7 +98,7 @@ function bindContact() {
     const fields = new FormData(form);
     if (fields.get('botcheck')) return;
     if (!profile.contactFormKey) {
-      const subject = encodeURIComponent(`[${fields.get('topic')}] Portfolio message from ${fields.get('name')}`);
+      const subject = encodeURIComponent(`[${(fields.get('topic') || 'General')}] Portfolio message from ${fields.get('name')}`);
       const body = encodeURIComponent(`${fields.get('message')}\n\nFrom ${fields.get('name')} (${fields.get('email')})`);
       status.textContent = `Opening your email app. If nothing opens, email me at ${profile.email}.`;
       location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
@@ -112,8 +112,8 @@ function bindContact() {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: profile.contactFormKey,
-          subject: `[${fields.get('topic')}] Portfolio message from ${fields.get('name')}`,
-          topic: fields.get('topic'),
+          subject: `[${(fields.get('topic') || 'General')}] Portfolio message from ${fields.get('name')}`,
+          topic: (fields.get('topic') || 'General'),
           from_name: 'Portfolio contact form',
           name: fields.get('name'),
           email: fields.get('email'),
