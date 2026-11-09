@@ -17,6 +17,13 @@ export const projectContent = [
     description: 'A browser prototype for teaching a new part from normal examples and inspecting another photo with a score, threshold, and heatmap.',
     repoUrl: visurexRepo,
     liveUrl: 'https://visurex-demo.vercel.app',
+    tile: {
+      title: 'VisureX: Smart-glasses shop-floor inspection',
+      context: 'WCTE (Walmart Centre for Tech Excellence), IIT Madras, Oct 2026 to present',
+      description: 'Training-free DINOv2 k-NN beat PatchCore, 0.956 vs 0.924 macro AUROC on 15 MVTec AD categories (k=8, 3 seeds). The check runs in the browser.',
+      codeUrl: visurexRepo,
+      preview: { src: `${previews}/tile-visurex.webp`, alt: 'VisureX shop-floor inspection page with a generated washer and browser inspection controls.' },
+    },
     preview: {
       src: `${previews}/visurex-inspection.png`,
       alt: 'VisureX inspection interface showing a GOOD result, score, and threshold for a generated normal washer.',
@@ -74,6 +81,13 @@ export const projectContent = [
     description: 'An investigation of what small multimodal models rely on when they answer questions about images, audio, and video.',
     repoUrl: `${counterpriorRepo}/tree/v2.0-final`,
     liveUrl: 'https://counterprior.vercel.app',
+    tile: {
+      title: 'CounterPrior: Do multimodal models know when they are guessing?',
+      context: 'AI4Bharat, IIT Madras (Prof. Mitesh Khapra), Nov 2025 - Present',
+      description: 'On Qwen2.5-Omni-3B audio, adding a layer-wise probe improved AUROC by +0.101 (95% CI +0.008 to +0.188) over a baseline built from the model’s own Yes/No scores. On LLaVA, the probe did not beat confidence, reported as a negative result.',
+      codeUrl: counterpriorRepo,
+      preview: { src: `${previews}/tile-counterprior.webp`, alt: 'CounterPrior research homepage introducing its evaluation of confidence and hidden-state probes.' },
+    },
     preview: {
       src: `${previews}/counterprior-research.png`,
       alt: 'CounterPrior research site showing the study sections and held-out sound findings.',
@@ -127,6 +141,9 @@ export const projectContent = [
     description: 'A browser prototype for face liveness, a document authenticity signal, and an enrolled-voice match, with a receipt that explains the decision.',
     repoUrl: humanAuthRepo,
     liveUrl: 'https://humanauth-id.vercel.app',
+    tile: {
+      preview: { src: `${previews}/tile-humanauth.webp`, alt: 'HumanAuth homepage showing on-device identity checks and a bundled sample verification receipt.' },
+    },
     preview: {
       src: `${previews}/humanauth-rejection.png`,
       alt: 'HumanAuth sample session with a rejected synthetic specimen and an explanation of the document check.',
@@ -196,6 +213,14 @@ export const projectContent = [
     tags: ['Time series', 'CGM', 'FastAPI'],
     description: 'A clinician-dashboard prototype that flags glucose events in continuous monitoring data and puts them alongside lifestyle logs.',
     repoUrl: spikesRepo,
+    tile: {
+      context: '1st place, HealthTech AI Hackathon, University of Birmingham, Mar 2026',
+      description: 'A clinician tool that finds glucose spikes and dips over 14 days of CGM data and links them to six lifestyle pillars.',
+      update: 'Now being tested with Gillvray Health on 800+ patients.',
+      note: 'Interface not shown. Built on the organisers’ synthetic data.',
+      codeUrl: spikesRepo,
+      preview: { src: `${previews}/spikes-cover.webp`, alt: 'SPIKES project cover for the HealthTech AI Hackathon at the University of Birmingham.' },
+    },
     caseStudy: {
       overview: 'Our team built SPIKES for the University of Birmingham HealthTech AI Hackathon. The prototype turns a continuous glucose monitor trace and lifestyle logs into a dashboard someone can review.',
       problem: 'A long glucose trace is hard to scan for recurring spikes or dips. A review tool needs to point to the underlying measurements so an analyst can investigate a flagged event.',
@@ -223,6 +248,14 @@ export const projectContent = [
     tags: ['TypeScript', 'Gemini', 'Evidence grounding'],
     description: 'An analyst prototype that compares sustainability claims with peer benchmarks and financial evidence, then shows the sources behind each finding.',
     repoUrl: esgRepo,
+    tile: {
+      context: 'Winner, Maxwell Data Challenge, Imperial College London, Jun 2026',
+      description: 'An ESG analyst copilot that compares company materiality scores against peer and FTSE 100 benchmarks and sends missing evidence to human review.',
+      update: 'Maxwell is now building versions of it for its clients.',
+      note: 'Interface not shown. Built on the organisers’ synthetic data.',
+      codeUrl: esgRepo,
+      preview: { src: `${previews}/esg-cover.webp`, alt: 'Transparent ESG Intelligence project cover for the Maxwell Data Challenge at Imperial College London.' },
+    },
     caseStudy: {
       overview: 'The project was developed for the Maxwell Data Challenge at Imperial College London. It connects company sustainability disclosures to peer benchmarks and financial measures in an analyst-facing dashboard.',
       problem: 'Company reports, sector expectations, and investment figures may tell different stories. Analysts need to see those differences and trace them to the underlying evidence.',
