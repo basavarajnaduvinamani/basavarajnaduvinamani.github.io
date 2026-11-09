@@ -104,3 +104,5 @@
 @media (prefers-reduced-motion: reduce) {
   .note-row:hover { transform: none; }
 }
+
+.whois-hook{font-size:1.15em}
