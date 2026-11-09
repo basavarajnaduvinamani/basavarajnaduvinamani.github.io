@@ -42,5 +42,5 @@ export const achievements = [
   { title: 'Maxwell Data Challenge', organization: 'Imperial College London', result: 'Winner', year: '2026', description: 'Transparent ESG Intelligence: ESG scores that show the evidence behind them.' },
   { title: 'UKFinnovator', organization: 'Imperial College London', result: 'National finalist', year: '2026', description: 'One of the top 100 students across the UK.' },
   { title: 'HealthTech AI Hackathon', organization: 'University of Birmingham', result: '1st place', year: '2026', description: 'SPIKES: links glucose spikes to daily habits, so clinicians see what needs attention first.' },
-  { title: 'HumanAuth', organization: 'ART-Park (IISc) and KSCST', result: 'State grant awardee', year: '2024 to 2025', description: 'Karnataka State Government funding for identity verification that runs on the device.' },
+  { title: 'HumanAuth', organization: 'ART-Park (IISc) and KSCST', result: 'State grant awardee', year: '2024 to 2025', description: 'On-device identity verification, funded by IISc and the Karnataka State Government.' },
 ];
