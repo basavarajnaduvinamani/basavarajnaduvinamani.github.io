@@ -118,3 +118,4 @@
 .topic-chip:hover span { color: var(--text); }
 .topic-chip input:checked + span { background: var(--text); border-color: var(--text); color: var(--bg); }
 .topic-chip input:focus-visible + span { outline: 2px solid var(--text); outline-offset: 2px; }
+.topic-chips .optional { color: var(--muted); }
