@@ -152,7 +152,7 @@ export const projectContent = [
     liveUrl: 'https://humanauth-id.vercel.app',
     tile: {
       tagline: 'Built for identity verification in banking and government services: face, voice and document checks that run on the device.',
-      context: 'Funded by an ART-Park (IISc) and KSCST grant',
+      context: 'Funded by the Karnataka State Government',
       codeUrl: humanAuthRepo,
       preview: { src: `${previews}/tile-humanauth.webp`, alt: 'HumanAuth homepage showing on-device identity checks and a bundled sample verification receipt.' },
     },
@@ -161,7 +161,7 @@ export const projectContent = [
       alt: 'HumanAuth sample session with a rejected synthetic specimen and an explanation of the document check.',
     },
     caseStudy: {
-      overview: 'HumanAuth grew out of a team project funded by an ART-Park (IISc) and KSCST grant. The browser implementation runs its checks locally and shows the individual signals behind a decision.',
+      overview: 'HumanAuth grew out of a team project funded by the Karnataka State Government. The browser implementation runs its checks locally and shows the individual signals behind a decision.',
       problem: 'An identity flow can collect sensitive inputs and still leave a user with only a pass or fail. This prototype explores a local flow with an explanation someone can inspect.',
       approach: [
         'Run face liveness, a document check, and enrolled-speaker matching in a browser worker.',
@@ -250,7 +250,7 @@ export const projectContent = [
         'Keep detected events tied to their time windows and source values.',
         'Show lifestyle correlations as leads for review. Establishing causality would require separate evidence.',
       ],
-      outcome: 'The project won the University of Birmingham HealthTech AI Hackathon. The repository contains the dashboard and local run instructions.',
+      outcome: 'The project won the University of Birmingham HealthTech AI Hackathon. It is now being tested with Gillvray Health on 800+ patients. The repository contains the dashboard and local run instructions.',
       limitations: 'The public materials document a hackathon prototype. Clinical validation and use in patient care are outside the published evidence.',
       sources: [
         { label: 'Hackathon project and architecture', url: spikesRepo },
