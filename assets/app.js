@@ -66,7 +66,7 @@ function homePage() {
 }
 
 function contactPage() {
-  const topics = ['Full-time role', 'Part-time or freelance work', 'Internship', 'Research collaboration', 'Something else'];
+  const topics = ['Full-time role', 'Freelance or part-time', 'Internship', 'Research', 'Something else'];
   return `<section class="contact-view">
     <div class="contact-form-card">
       <h1>Let's talk</h1>
@@ -74,7 +74,7 @@ function contactPage() {
       <form class="contact-form">
         <label>Full name <input name="name" autocomplete="name" required maxlength="80"></label>
         <label>Email address <input name="email" type="email" autocomplete="email" required maxlength="120"></label>
-        <label>What is this about? <select name="topic" required><option value="" disabled selected>Choose one</option>${topics.map(topic => `<option>${topic}</option>`).join('')}</select></label>
+        <fieldset class="topic-chips"><legend>What is this about?</legend><div>${topics.map((topic, index) => `<label class="topic-chip"><input type="radio" name="topic" value="${topic}"${index === 0 ? ' required' : ''}><span>${topic}</span></label>`).join('')}</div></fieldset>
         <label>Message <textarea name="message" required maxlength="1000" rows="5"></textarea></label>
         <input type="checkbox" name="botcheck" class="contact-trap" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button class="pill light" type="submit">Send message</button>
