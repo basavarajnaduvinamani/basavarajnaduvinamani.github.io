@@ -1,4 +1,4 @@
-import { projectContent } from './project-content.js';
+import { projectContent } from './project-content.js?v=nda-1';
 
 const iconPaths = {
   arrow: '<path d="M5 12h14m-6-6 6 6-6 6"/>',
@@ -127,6 +127,7 @@ function projectDetail(project) {
       <p>${escapeHTML(project.description)}</p>
       ${projectLinks(project)}
     </header>
+    ${project.caseStudy.confidential ? `<aside class="work-confidential" aria-label="Confidentiality notice"><p><strong>Covered by a non-disclosure agreement.</strong> This page shows only the details I'm allowed to share publicly. For more about this project, <a href="#contact">get in touch</a>.</p></aside>` : ''}
     ${media}
     <div class="work-study-body">${studyBody(project.caseStudy)}</div>
     <div class="work-sequence" role="navigation" aria-label="Other case studies">

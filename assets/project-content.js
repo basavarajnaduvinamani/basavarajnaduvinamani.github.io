@@ -238,6 +238,7 @@ export const projectContent = [
       preview: { src: `${previews}/spikes-cover.webp`, alt: 'SPIKES project cover for the HealthTech AI Hackathon at the University of Birmingham.' },
     },
     caseStudy: {
+      confidential: true,
       overview: 'Our team built SPIKES for the University of Birmingham HealthTech AI Hackathon. The prototype turns a continuous glucose monitor trace and lifestyle logs into a dashboard someone can review.',
       problem: 'A long glucose trace is hard to scan for recurring spikes or dips. A review tool needs to point to the underlying measurements so an analyst can investigate a flagged event.',
       approach: [
@@ -273,6 +274,7 @@ export const projectContent = [
       preview: { src: `${previews}/esg-cover.webp`, alt: 'Transparent ESG Intelligence project cover for the Maxwell Data Challenge at Imperial College London.' },
     },
     caseStudy: {
+      confidential: true,
       overview: 'The project was developed for the Maxwell Data Challenge at Imperial College London. It connects company sustainability disclosures to peer benchmarks and financial measures in an analyst-facing dashboard.',
       problem: 'Company reports, sector expectations, and investment figures may tell different stories. Analysts need to see those differences and trace them to the underlying evidence.',
       approach: [

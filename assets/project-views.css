@@ -656,3 +656,7 @@
   }
 }
 .work-card-body h2,.work-heading h1,.body-copy>p:first-child{text-wrap:balance}
+
+.work-confidential { margin: 24px 0 0; padding: 14px 18px; border: 1px dashed var(--line); border-radius: 14px; background: var(--surface); font-size: 14px; line-height: 1.55; color: var(--muted); }
+.work-confidential strong { color: var(--text); font-weight: 600; }
+.work-confidential a { color: var(--text); text-decoration: underline; }
