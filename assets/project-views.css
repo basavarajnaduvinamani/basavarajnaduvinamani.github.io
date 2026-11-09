@@ -655,3 +655,4 @@
     transform: none;
   }
 }
+.work-card-body h2,.work-heading h1,.body-copy>p:first-child{text-wrap:balance}
