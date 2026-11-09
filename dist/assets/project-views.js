@@ -19,6 +19,8 @@ const projectById = new Map(projectContent.map(project => [project.id, project])
 const filtersFor = project => project.filters?.length ? project.filters : [project.category];
 const filters = [...new Set(projectContent.flatMap(filtersFor))];
 let selectedFilter = '';
+const tileOrder = { visurex: 0, counterprior: 1, assessment: 2, humanauth: 3, esg: 4, spikes: 5 };
+const projectTiles = [...projectContent].sort((a, b) => (tileOrder[a.id] ?? 6) - (tileOrder[b.id] ?? 6));
 
 function workTags(tags) {
   return `<ul class="work-tags" aria-label="Project topics">${tags.map(tag => `<li>${escapeHTML(tag)}</li>`).join('')}</ul>`;
@@ -26,23 +28,30 @@ function workTags(tags) {
 
 function workLink(href, label, { symbol = 'arrow', external = false, primary = false } = {}) {
   if (!href) return '';
-  return `<a class="work-link${primary ? ' work-link-primary' : ''}" href="${escapeHTML(href)}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${primary ? '<span class="work-live-dot" aria-hidden="true"></span>' : ''}${label}${icon(symbol)}</a>`;
+  return `<a class="work-link${primary ? ' work-link-primary' : ''}" href="${escapeHTML(href)}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${primary ? '<span class="work-live-dot" aria-hidden="true"></span>' : ''}${label}${symbol ? icon(symbol) : ''}</a>`;
 }
 
 function card(project) {
   const href = `#projects/${project.id}`;
-  const media = project.preview
-    ? `<img src="${escapeHTML(project.preview.src)}" alt="" loading="lazy" decoding="async">`
+  const tile = project.tile ?? {};
+  const preview = tile.preview ?? project.preview;
+  const updatedCopy = Boolean(tile.description);
+  const media = preview
+    ? `<img src="${escapeHTML(preview.src)}" alt="${escapeHTML(tile.preview?.alt ?? '')}" loading="lazy" decoding="async">`
     : `<span class="work-preview-label"><span>${escapeHTML(project.category)}</span><strong>${escapeHTML(project.title)}</strong></span>`;
   return `<article class="work-card" data-work-card="${escapeHTML(project.id)}"${selectedFilter && !filtersFor(project).includes(selectedFilter) ? ' hidden' : ''}>
     <a class="work-card-media" href="${href}" aria-label="Open ${escapeHTML(project.title)} case study">${media}</a>
     <div class="work-card-body">
-      <h2>${escapeHTML(project.title)}</h2>
-      <p>${escapeHTML(project.description)}</p>
+      <h2>${escapeHTML(tile.title ?? project.title)}</h2>
+      ${tile.context ? `<p><small>${escapeHTML(tile.context)}</small></p>` : ''}
+      <p>${escapeHTML(tile.description ?? project.description)}</p>
+      ${tile.update ? `<p>${escapeHTML(tile.update)}</p>` : ''}
+      ${tile.note ? `<p><small>${escapeHTML(tile.note)}</small></p>` : ''}
       ${workTags(project.tags)}
       <div class="work-actions">
-        ${workLink(project.liveUrl, 'Live site', { external: true, primary: true, symbol: 'external' })}
-        ${workLink(href, 'Case study')}
+        ${workLink(project.liveUrl, updatedCopy ? 'Live demo' : 'Live site', { external: true, primary: true, symbol: updatedCopy ? null : 'external' })}
+        ${workLink(tile.codeUrl, 'Code', { external: true, symbol: null })}
+        ${workLink(href, 'Case study', { symbol: updatedCopy ? null : 'arrow' })}
       </div>
     </div>
   </article>`;
@@ -66,7 +75,7 @@ function projectIndex() {
     </header>
     <div class="work-filters" role="group" aria-label="Filter projects">${pills.join('')}</div>
     <p class="work-status" data-work-status role="status">${filterStatus(selectedFilter)}</p>
-    <div class="work-list" id="work-project-list">${projectContent.map(card).join('')}</div>
+    <div class="work-list" id="work-project-list">${projectTiles.map(card).join('')}</div>
   </div>`;
 }
 
