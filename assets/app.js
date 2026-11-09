@@ -27,7 +27,7 @@ function socialLinks() {
 }
 
 function experienceCards() {
-  return `<div class="dashed-card experience-list">${experience.map(item => `<details><summary><div class="experience-main"><img class="institution-logo" src="/assets/institutions/${item.logo}" alt="${escapeHTML(item.company)} logo"><div><h3>${escapeHTML(item.company)}</h3><p>${escapeHTML(item.role)} · ${escapeHTML(item.location)}</p></div></div><div class="experience-period">${item.period}${icon('chevron')}</div></summary><div class="experience-body"><p>${escapeHTML(item.description)}</p><ul>${item.points.map(point => `<li>${escapeHTML(point)}</li>`).join('')}</ul>${tagList(item.tools)}</div></details>`).join('')}</div>`;
+  return `<div class="dashed-card experience-list">${experience.map((item, index) => `<details${index === 0 ? ' open' : ''}><summary><div class="experience-main"><img class="institution-logo" src="/assets/institutions/${item.logo}" alt="${escapeHTML(item.company)} logo"><div><h3>${escapeHTML(item.company)}</h3><p>${escapeHTML(item.role)}, ${escapeHTML(item.location)}</p></div></div><div class="experience-period">${item.period}${icon('chevron')}</div></summary><div class="experience-body"><p>${escapeHTML(item.description)}</p><ul>${item.points.map(point => `<li>${escapeHTML(point)}</li>`).join('')}</ul><p><a href="${item.caseStudy}">Read the case study</a></p></div></details>`).join('')}</div>`;
 }
 
 function educationCards() {
@@ -52,16 +52,15 @@ function currentAge() {
 
 function homePage() {
   return `<div class="home-shell"><div class="home-frame">
-    <div class="hero reveal"><div class="banner"><video class="video-light" data-src="/assets/winter-light.mp4" poster="/assets/winter-light-poster.jpg" preload="metadata" loop muted playsinline aria-label="Winter landscape with falling snow"></video><video class="video-dark" data-src="/assets/winter-dark.mp4" poster="/assets/winter-dark-poster.jpg" preload="metadata" loop muted playsinline aria-label="Winter landscape at night"></video></div><button class="avatar-wrap" type="button" aria-label="Animate portrait"><img src="/assets/profile.png" alt="Basavaraj's abstract profile artwork" width="112" height="112"></button><div class="hero-actions"><a class="pill primary" href="#projects">View Projects ${icon('arrow')}</a><a class="pill light" href="#research">View Research ${icon('arrow')}</a></div></div>
+    <div class="hero reveal"><div class="banner"><video class="video-light" data-src="/assets/winter-light.mp4" poster="/assets/winter-light-poster.jpg" preload="metadata" loop muted playsinline aria-label="Winter landscape with falling snow"></video><video class="video-dark" data-src="/assets/winter-dark.mp4" poster="/assets/winter-dark-poster.jpg" preload="metadata" loop muted playsinline aria-label="Winter landscape at night"></video></div><button class="avatar-wrap" type="button" aria-label="Animate portrait"><img src="/assets/profile.png" alt="Basavaraj's abstract profile artwork" width="112" height="112"></button><div class="hero-actions"><a class="pill primary" href="#projects">View projects</a><a class="pill light" href="#research">View research</a></div></div>
     <section class="identity reveal"><div class="name-line"><h1>${profile.name}</h1><span class="verified" title="Personal profile">${icon('verified')}</span></div><div class="role-line"><span id="typed-role">AI Researcher</span><span class="typing-caret" aria-hidden="true"></span></div><p class="location">${currentAge()}, India</p></section>
-    <section class="home-section"><h2>Winter Arc</h2><p class="calendar-context">${winterPeriod} · Public GitHub activity</p><div class="dashed-card activity-card" id="winter-calendar" aria-busy="true"><p class="load-error">Loading GitHub activity…</p></div></section>
-    <section class="home-section"><h2>Who is Basavaraj?</h2><div class="body-copy"><p>TL;DR learned by hacking around on the internet.</p><p>I work on <strong>computer vision, multimodal language models, and reliable AI systems</strong>. From probing where a model starts to hallucinate to building a defect-detection pipeline, I like work that connects <strong>understanding how things work with making them useful</strong>.</p><p>I'm an <strong>AI Research Intern at the Walmart Center for Tech Excellence</strong> and a Master's student in <strong>Data Science and AI at IIT Madras</strong>, with an exchange semester at the University of Birmingham. Previously, I worked on multimodal hallucinations at <strong>AI4Bharat</strong>.</p><p class="quote">“The best way to predict the future is to invent it.” — Alan Kay</p></div></section>
-    <section class="home-section"><h2>Tech Stack</h2>${techStrip()}</section>
-    <section class="home-section"><h2>Research & Engineering</h2><div class="dashed-card callout"><p>My work spans model evaluation, computer vision, grounded LLM systems, and AI agents. I build pipelines and evaluations that make model behaviour easier to inspect and understand.</p><a class="pill light" href="#projects">View Projects ${icon('arrow')}</a></div></section>
-    <section class="home-section"><h2>Experience</h2>${experienceCards()}</section>
-    <section class="home-section"><h2>Education</h2>${educationCards()}</section>
+    <section class="home-section"><h2>Winter Arc</h2><p class="calendar-context">${winterPeriod}. Public GitHub contributions.</p><div class="dashed-card activity-card" id="winter-calendar" aria-busy="true"><p class="load-error">Loading GitHub activity…</p></div></section>
+    <section class="home-section"><h2>Who is Basavaraj?</h2><div class="body-copy"><p><strong>AI isn't here to replace us. It's here to empower us.</strong></p><div style="margin-bottom:16px">${tagList(['Powerful tools, used where they help', 'The best way to predict the future is to create it'])}</div><p>I'm Basavaraj, a master's student in Data Science and AI. I build AI tools that people can open and use.</p><p>Everything I build keeps a person in charge: a quality engineer, a clinician, an analyst or a teacher gets a faster first read, sees the evidence behind it, and makes the final call.</p><p>I work by three rules. Measure before you claim. Report what failed as clearly as what worked. Ship something a real person can try.</p></div></section>
     <section class="home-section" id="achievements"><h2>Achievements</h2>${achievementCards()}</section>
-    <section class="home-section"><h2>GitHub Activity</h2><div class="dashed-card activity-card" id="github-calendar" aria-busy="true"><p class="load-error">Loading GitHub activity…</p></div></section>
+    <section class="home-section" id="experience"><h2>Experience</h2>${experienceCards()}</section>
+    <section class="home-section"><h2>Education</h2>${educationCards()}</section>
+    <section class="home-section"><h2>Tech stack</h2>${techStrip()}</section>
+    <section class="home-section"><h2>GitHub activity</h2><div class="dashed-card activity-card" id="github-calendar" aria-busy="true"><p class="load-error">Loading GitHub activity…</p></div></section>
     <section class="home-section" aria-label="Social profiles">${socialLinks()}</section>
   </div></div>`;
 }
@@ -69,13 +68,13 @@ function homePage() {
 function contactPage() {
   return `<section class="contact-view">
     <div class="contact-form-card">
-      <h1>Send a Message</h1>
-      <p class="extras-intro">For research conversations, engineering opportunities, or questions about a project, write a note and open it in your email app.</p>
+      <h1>Send a message</h1>
+      <p class="extras-intro">Write about research, an engineering role or one of the projects. The form opens a draft in your email app.</p>
       <form class="contact-form">
         <label>Name <input name="name" autocomplete="name" required maxlength="80"></label>
         <label>Email <input name="email" type="email" autocomplete="email" required maxlength="120"></label>
         <label>Message <textarea name="message" required maxlength="1000" rows="5"></textarea></label>
-        <button class="pill light" type="submit">Open email draft ${icon('arrow')}</button>
+        <button class="pill light" type="submit">Open email draft</button>
         <p class="contact-status" role="status"></p>
       </form>
     </div>

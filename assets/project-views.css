@@ -257,8 +257,7 @@
 .work-kicker > span {
   color: var(--muted);
   font: 500 12px/1.5 ui-monospace, monospace;
-  letter-spacing: .12em;
-  text-transform: uppercase;
+  letter-spacing: 0;
 }
 
 .work-kicker .work-tags {
@@ -300,8 +299,7 @@
 .work-detail-section h2 {
   color: var(--muted);
   font: 600 12px/1.7 ui-monospace, monospace;
-  letter-spacing: .11em;
-  text-transform: uppercase;
+  letter-spacing: 0;
 }
 
 .work-detail-section p,
@@ -657,3 +655,4 @@
     transform: none;
   }
 }
+.work-card-body h2,.work-heading h1,.body-copy>p:first-child{text-wrap:balance}
