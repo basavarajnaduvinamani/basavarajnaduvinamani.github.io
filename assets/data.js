@@ -4,6 +4,8 @@ export const profile = {
   github: 'https://github.com/basavarajnaduvinamani',
   linkedin: 'https://www.linkedin.com/in/basavarajnaduvinamani/',
   email: 'da25c005@smail.iitm.ac.in',
+  // Public Web3Forms access key (safe to publish). Empty = the form falls back to opening an email draft.
+  contactFormKey: '',
   roles: ['AI Researcher', 'ML Engineer', 'Builder'],
   skills: [
     ['Python', 'python', '#3776ab'], ['PyTorch', 'pytorch', '#ee4c2c'],
