@@ -66,13 +66,15 @@ function homePage() {
 }
 
 function contactPage() {
+  const topics = ['Full-time role', 'Part-time or freelance work', 'Internship', 'Research collaboration', 'Something else'];
   return `<section class="contact-view">
     <div class="contact-form-card">
-      <h1>Send a message</h1>
-      <p class="extras-intro">Write about research, an engineering role or one of the projects. I reply by email.</p>
+      <h1>Let's talk</h1>
+      <p class="extras-intro">Fill out this form and I'll get back to you within 24 hours.</p>
       <form class="contact-form">
-        <label>Name <input name="name" autocomplete="name" required maxlength="80"></label>
-        <label>Email <input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+        <label>Full name <input name="name" autocomplete="name" required maxlength="80"></label>
+        <label>Email address <input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+        <label>What is this about? <select name="topic" required><option value="" disabled selected>Choose one</option>${topics.map(topic => `<option>${topic}</option>`).join('')}</select></label>
         <label>Message <textarea name="message" required maxlength="1000" rows="5"></textarea></label>
         <input type="checkbox" name="botcheck" class="contact-trap" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button class="pill light" type="submit">Send message</button>
@@ -80,7 +82,7 @@ function contactPage() {
       </form>
     </div>
     <div class="contact-socials">
-      <p>Or reach me directly</p>
+      <h2>Connect with me on socials</h2>
       ${socialLinks()}
       <a class="contact-email" href="mailto:${profile.email}">${profile.email}</a>
     </div>
@@ -97,7 +99,7 @@ function bindContact() {
     const fields = new FormData(form);
     if (fields.get('botcheck')) return;
     if (!profile.contactFormKey) {
-      const subject = encodeURIComponent(`Portfolio inquiry from ${fields.get('name')}`);
+      const subject = encodeURIComponent(`[${fields.get('topic')}] Portfolio message from ${fields.get('name')}`);
       const body = encodeURIComponent(`${fields.get('message')}\n\nFrom ${fields.get('name')} (${fields.get('email')})`);
       status.textContent = `Opening your email app. If nothing opens, email me at ${profile.email}.`;
       location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
@@ -111,7 +113,8 @@ function bindContact() {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: profile.contactFormKey,
-          subject: `Portfolio inquiry from ${fields.get('name')}`,
+          subject: `[${fields.get('topic')}] Portfolio message from ${fields.get('name')}`,
+          topic: fields.get('topic'),
           from_name: 'Portfolio contact form',
           name: fields.get('name'),
           email: fields.get('email'),
@@ -122,7 +125,7 @@ function bindContact() {
       const result = await response.json().catch(() => ({}));
       if (response.ok && result.success) {
         form.reset();
-        status.textContent = 'Thanks, your message was sent. I will reply by email.';
+        status.textContent = 'Message sent. Thanks, I will get back to you within 24 hours.';
       } else {
         status.textContent = fallback;
       }
