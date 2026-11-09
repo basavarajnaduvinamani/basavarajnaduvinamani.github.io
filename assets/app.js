@@ -54,13 +54,13 @@ function homePage() {
   return `<div class="home-shell"><div class="home-frame">
     <div class="hero reveal"><div class="banner"><video class="video-light" data-src="/assets/winter-light.mp4" poster="/assets/winter-light-poster.jpg" preload="metadata" loop muted playsinline aria-label="Winter landscape with falling snow"></video><video class="video-dark" data-src="/assets/winter-dark.mp4" poster="/assets/winter-dark-poster.jpg" preload="metadata" loop muted playsinline aria-label="Winter landscape at night"></video></div><button class="avatar-wrap" type="button" aria-label="Animate portrait"><img src="/assets/profile.png" alt="Basavaraj's abstract profile artwork" width="112" height="112"></button><div class="hero-actions"><a class="pill primary" href="#projects">View projects</a><a class="pill light" href="#research">View research</a></div></div>
     <section class="identity reveal"><div class="name-line"><h1>${profile.name}</h1><span class="verified" title="Personal profile">${icon('verified')}</span></div><div class="role-line"><span id="typed-role">AI Researcher</span><span class="typing-caret" aria-hidden="true"></span></div><p class="location">${currentAge()}, India</p></section>
-    <section class="home-section"><h2>Winter Arc</h2><p class="calendar-context">${winterPeriod}. Public GitHub activity</p><div class="dashed-card activity-card" id="winter-calendar" aria-busy="true"><p class="load-error">Loading GitHub activity…</p></div></section>
-    <section class="home-section"><h2>Who is Basavaraj?</h2><div class="body-copy"><p><strong>AI isn't here to replace us. It's here to empower us.</strong></p><div style="margin-bottom:16px">${tagList(['Powerful tools, used where they help', 'The best way to predict the future is to create it'])}</div><p>I'm Basavaraj, a master's student in Data Science and AI who likes building things people can actually open and use.</p><p>Everything I build keeps a person in charge: a quality engineer, a clinician, an analyst or a teacher gets a faster first read, sees the evidence behind it, and makes the final call.</p><p>I work by three rules. Measure before you claim. Report what failed as clearly as what worked. Ship something a real person can try.</p></div></section>
+    <section class="home-section"><h2>Winter Arc</h2><p class="calendar-context">${winterPeriod}. Public GitHub contributions.</p><div class="dashed-card activity-card" id="winter-calendar" aria-busy="true"><p class="load-error">Loading GitHub activity…</p></div></section>
+    <section class="home-section"><h2>Who is Basavaraj?</h2><div class="body-copy"><p><strong>AI isn't here to replace us. It's here to empower us.</strong></p><div style="margin-bottom:16px">${tagList(['Powerful tools, used where they help', 'The best way to predict the future is to create it'])}</div><p>I'm Basavaraj, a master's student in Data Science and AI. I build AI tools that people can open and use.</p><p>Everything I build keeps a person in charge: a quality engineer, a clinician, an analyst or a teacher gets a faster first read, sees the evidence behind it, and makes the final call.</p><p>I work by three rules. Measure before you claim. Report what failed as clearly as what worked. Ship something a real person can try.</p></div></section>
     <section class="home-section" id="achievements"><h2>Achievements</h2>${achievementCards()}</section>
     <section class="home-section" id="experience"><h2>Experience</h2>${experienceCards()}</section>
     <section class="home-section"><h2>Education</h2>${educationCards()}</section>
-    <section class="home-section"><h2>Tech Stack</h2>${techStrip()}</section>
-    <section class="home-section"><h2>GitHub Activity</h2><div class="dashed-card activity-card" id="github-calendar" aria-busy="true"><p class="load-error">Loading GitHub activity…</p></div></section>
+    <section class="home-section"><h2>Tech stack</h2>${techStrip()}</section>
+    <section class="home-section"><h2>GitHub activity</h2><div class="dashed-card activity-card" id="github-calendar" aria-busy="true"><p class="load-error">Loading GitHub activity…</p></div></section>
     <section class="home-section" aria-label="Social profiles">${socialLinks()}</section>
   </div></div>`;
 }
@@ -68,8 +68,8 @@ function homePage() {
 function contactPage() {
   return `<section class="contact-view">
     <div class="contact-form-card">
-      <h1>Send a Message</h1>
-      <p class="extras-intro">For research conversations, engineering opportunities, or questions about a project, write a note and open it in your email app.</p>
+      <h1>Send a message</h1>
+      <p class="extras-intro">Write about research, an engineering role or one of the projects. The form opens a draft in your email app.</p>
       <form class="contact-form">
         <label>Name <input name="name" autocomplete="name" required maxlength="80"></label>
         <label>Email <input name="email" type="email" autocomplete="email" required maxlength="120"></label>

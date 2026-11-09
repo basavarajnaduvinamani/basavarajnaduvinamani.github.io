@@ -14,7 +14,7 @@ export const projectContent = [
     category: 'Industrial inspection',
     filters: ['Computer vision', 'Applied AI'],
     tags: ['DINOv2', 'PatchCore', 'Browser inference'],
-    description: 'A browser prototype for teaching a new part from normal examples and inspecting another photo with a score, threshold, and heatmap.',
+    description: 'A browser tool that learns a part from a few photos of good parts, then checks new photos and marks where a defect appears.',
     repoUrl: visurexRepo,
     liveUrl: 'https://visurex-demo.vercel.app',
     tile: {
@@ -30,21 +30,21 @@ export const projectContent = [
       alt: 'VisureX inspection interface showing a GOOD result, score, and threshold for a generated normal washer.',
     },
     caseStudy: {
-      overview: 'VisureX started with an inherited inspection pipeline at the Walmart Centre for Tech Excellence at IIT Madras. My work covered the benchmark harness, few-shot comparison, browser export and parity, capture checks, and prototype engineering.',
-      problem: 'A quality engineer may have a handful of normal part photos and few labeled defects. A quality-inspection workflow also needs to show where an anomaly appears and ask for a retake when a photo is unusable.',
+      overview: 'VisureX builds on an inspection pipeline I inherited at the Walmart Centre for Tech Excellence, IIT Madras. I built the benchmark, the few-shot comparison, the browser export and its parity checks, the photo-quality check and the prototype.',
+      problem: 'A small manufacturer may have only a handful of photos of good parts and few examples of defects. Inspection also has to show where a defect is and ask for a new photo when one is unusable.',
       approach: [
-        'Compared an established DINOv2 patch-neighbor baseline with the inherited PatchCore implementation under the same reference-image budgets.',
+        'Compared a DINOv2 nearest-neighbour method with the existing PatchCore pipeline, giving both the same number of reference photos.',
         'Built a browser flow for creating a reference bank, calibrating on separate normal photos, and inspecting a new photo.',
         'Extended the prototype to capture audit findings and track follow-up actions on one device.',
       ],
       decisions: [
         'Keep reference photos and threshold calibration separate to avoid tuning a threshold on the memory bank.',
         'Show the operating threshold beside the feature-distance score and heatmap so a quality engineer can see what drove the result.',
-        'Use explicitly labeled generated examples in the public demo.',
+        'Label every generated example in the public demo.',
       ],
-      outcome: 'In tests with only a few reference photos per part, the DINOv2 approach found defects more reliably than the inherited PatchCore pipeline. The prototype runs in the browser and asks for a retake when a photo is blurry. A router that was pre-registered to pick between methods did not work, and it is reported as a negative result.',
+      outcome: 'In tests with only a few reference photos per part, the DINOv2 approach found defects more reliably than the existing PatchCore pipeline. The prototype runs in the browser and asks for a retake when a photo is blurry. A router pre-registered to pick between the two methods did not work; it is reported as a negative result.',
       technical: [
-        'Benchmark: with eight references (k=8) on MVTec AD, DINOv2 k-NN reached macro AUROC* 0.956 (95% CI 0.927–0.981) versus 0.924 (0.868–0.968) for PatchCore, across 15 categories and three seeds. The paired difference was 0.032 (0.001–0.071). The full-reference comparison was inconclusive. The DINOv2 method follows AnomalyDINO (Damm et al., WACV 2025).',
+        'Benchmark: with eight references (k=8) on MVTec AD, DINOv2 k-NN reached macro AUROC* 0.956 (95% CI 0.927–0.981) versus 0.924 (0.868–0.968) for PatchCore, across 15 categories and three seeds. The full-reference comparison was inconclusive. The DINOv2 method follows AnomalyDINO (Damm et al., WACV 2025).',
         'Browser export: the DINOv2 ONNX model running in WebAssembly matched the reference on 20 of 20 parity checks, at a median 361 ms on a laptop CPU. The PatchCore ONNX export matched on 261 of 261 checks at 163–168 ms on CPU.',
         'Capture check: a blurry photo is rejected and the user is asked to retake it.',
         'Glasses bridge: a Kotlin bridge for Ray-Ban Meta glasses (toolkit 1.0.1) has 23 unit tests and an emulator test. It has not been run on glasses.',
@@ -87,14 +87,13 @@ export const projectContent = [
     category: 'Multimodal evaluation',
     filters: ['Evaluation', 'Research'],
     tags: ['LLaVA', 'Input swaps', 'Model probes'],
-    description: 'An investigation of what small multimodal models rely on when they answer questions about images, audio, and video.',
+    description: 'A study of what small multimodal models rely on when they answer questions about images, audio and video.',
     repoUrl: `${counterpriorRepo}/tree/v2.0-final`,
     liveUrl: 'https://counterprior.vercel.app',
     tile: {
-      title: 'CounterPrior: Do multimodal models know when they are guessing?',
       tagline: 'How do machines see? A workbench for tinkering with open-weight multimodal models and testing whether they know when they’re guessing.',
       context: 'LLaVA work at AI4Bharat, IIT Madras (Prof. Mitesh Khapra), Nov 2025 to Feb 2026. Extended to audio and video in Nov 2026.',
-      description: 'On Qwen2.5-Omni-3B audio, adding a layer-wise probe improved AUROC by +0.101 (95% CI +0.008 to +0.188) over a baseline built from the model’s own Yes/No scores. On LLaVA, the probe did not beat confidence, reported as a negative result.',
+      description: 'On Qwen2.5-Omni-3B audio, a layer-wise probe raised AUROC by +0.101 (95% CI +0.008 to +0.188) over a baseline built from the model’s own Yes/No scores. On LLaVA, the probe did not beat the model’s confidence, and that negative result is reported too.',
       codeUrl: counterpriorRepo,
       preview: { src: `${previews}/tile-counterprior.webp`, alt: 'CounterPrior research homepage introducing its evaluation of confidence and hidden-state probes.' },
     },
@@ -116,7 +115,7 @@ export const projectContent = [
         'Release the report, controls, and example explorer with links back to evidence.',
       ],
       outcome: 'On held-out image questions, the LLaVA probe trailed model confidence and steering did not beat the controls. A Qwen sound probe added ranking signal, but the filter exceeded its preset recall-loss cap and was not shipped. The Gemma 4 E2B audio-video comparison was inconclusive (underpowered).',
-      limitations: 'The Gemma sound and video comparisons and the Qwen video comparison were underpowered. They contained 15, 24, and 26 false Yes cases respectively, below the preregistered minimum of 40 per comparison.',
+      limitations: 'The Gemma sound and video comparisons and the Qwen video comparison were underpowered: each had fewer false Yes cases than the preregistered minimum.',
       sources: [
         { label: 'Verified release results and intervals', url: `${counterpriorRepo}/tree/v2.0-final#counterprior` },
         { label: 'Release records and scoring receipts', url: `${counterpriorRepo}/tree/v2.0-final/results/v2` },
@@ -148,12 +147,13 @@ export const projectContent = [
     category: 'Identity security',
     filters: ['Computer vision', 'Applied AI'],
     tags: ['ONNX Runtime', 'Browser workers', 'Biometrics'],
-    description: 'A browser prototype for face liveness, a document authenticity signal, and an enrolled-voice match, with a receipt that explains the decision.',
+    description: 'A browser prototype that checks face liveness, document authenticity and an enrolled voice, then explains the decision in a receipt.',
     repoUrl: humanAuthRepo,
     liveUrl: 'https://humanauth-id.vercel.app',
     tile: {
-      tagline: 'Built to verify real people in banking, government services and other onboarding: face, voice and document checks that run on the device.',
-      context: 'Supported by an ART-Park (IISc) and KSCST grant',
+      tagline: 'Built for identity verification in banking and government services: face, voice and document checks that run on the device.',
+      context: 'Funded by an ART-Park (IISc) and KSCST grant',
+      codeUrl: humanAuthRepo,
       preview: { src: `${previews}/tile-humanauth.webp`, alt: 'HumanAuth homepage showing on-device identity checks and a bundled sample verification receipt.' },
     },
     preview: {
@@ -161,7 +161,7 @@ export const projectContent = [
       alt: 'HumanAuth sample session with a rejected synthetic specimen and an explanation of the document check.',
     },
     caseStudy: {
-      overview: 'HumanAuth grew out of a team project supported by an ART-Park (IISc) grant with KSCST support. The browser implementation runs its checks locally and shows the individual signals behind a decision.',
+      overview: 'HumanAuth grew out of a team project funded by an ART-Park (IISc) and KSCST grant. The browser implementation runs its checks locally and shows the individual signals behind a decision.',
       problem: 'An identity flow can collect sensitive inputs and still leave a user with only a pass or fail. This prototype explores a local flow with an explanation someone can inspect.',
       approach: [
         'Run face liveness, a document check, and enrolled-speaker matching in a browser worker.',

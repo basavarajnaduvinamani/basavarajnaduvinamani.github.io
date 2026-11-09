@@ -72,7 +72,7 @@ function projectIndex() {
   return `<div class="work-view work-index">
     <header class="work-heading">
       <h1>Projects</h1>
-      <p>Applications and experiments across AI evaluation, computer vision, and grounded language models.</p>
+      <p>Working tools and research in quality inspection, model evaluation, identity checks, grading, health and ESG.</p>
     </header>
     <div class="work-filters" role="group" aria-label="Filter projects">${pills.join('')}</div>
     <p class="work-status" data-work-status role="status">${filterStatus(selectedFilter)}</p>
@@ -106,8 +106,8 @@ function studyBody(study) {
 
 function projectLinks(project) {
   return `<div class="work-actions">
-    ${workLink(project.liveUrl, 'Live site', { external: true, primary: true })}
-    ${workLink(project.repoUrl, 'Repository', { external: true })}
+    ${workLink(project.liveUrl, 'Live demo', { external: true, primary: true })}
+    ${workLink(project.repoUrl, 'Code', { external: true })}
   </div>`;
 }
 
@@ -144,8 +144,8 @@ function researchFigures(project) {
 function researchIndex() {
   return `<div class="work-view work-archive">
     <header class="work-heading">
-      <h1>Research Archive</h1>
-      <p>Figures, working interfaces, and notes from research and engineering projects.</p>
+      <h1>Research</h1>
+      <p>Figures, screenshots and evaluation notes from the projects.</p>
     </header>
     <div class="work-folder-grid">${archive.map(project => {
       const figures = researchFigures(project);
@@ -181,7 +181,7 @@ function researchDetail(project) {
     </dialog>
   </section>` : '';
   return `<article class="work-view work-gallery-page">
-    <a class="work-back" href="#research">${icon('back')} Back to Research</a>
+    <a class="work-back" href="#research">${icon('back')} All research</a>
     <header class="work-heading">
       <div class="work-kicker"><span>${escapeHTML(project.research.category)}</span></div>
       <h1>${escapeHTML(project.research.title)}</h1>

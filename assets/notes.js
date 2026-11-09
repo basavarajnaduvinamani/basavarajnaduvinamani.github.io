@@ -77,7 +77,7 @@ export function renderNotes(route) {
     ${note.sections.map(([title, body]) => `<section><h2>${title}</h2><p>${body}</p></section>`).join('')}
     <div class="note-links">
       <a class="pill primary" href="${note.source}" target="_blank" rel="noopener noreferrer">Read the source ${external}</a>
-      <a class="pill light" href="#projects/${note.project}">View case study ${arrow}</a>
+      <a class="pill light" href="#projects/${note.project}">View case study</a>
     </div>
   </article>`;
 }
