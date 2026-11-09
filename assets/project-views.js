@@ -17,16 +17,17 @@ const icon = name => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
 const archive = projectContent.filter(project => project.research);
 const projectById = new Map(projectContent.map(project => [project.id, project]));
 const filtersFor = project => project.filters?.length ? project.filters : [project.category];
-const filters = [...new Set(projectContent.flatMap(filtersFor))];
+const filters = ['Applied AI', 'Evaluation'];
 let selectedFilter = '';
 const tileOrder = { visurex: 0, counterprior: 1, assessment: 2, humanauth: 3, esg: 4, spikes: 5 };
-const projectTiles = [...projectContent].sort((a, b) => (tileOrder[a.id] ?? 6) - (tileOrder[b.id] ?? 6));
+projectContent.sort((a, b) => (tileOrder[a.id] ?? 6) - (tileOrder[b.id] ?? 6));
+const projectTiles = projectContent;
 
 function workTags(tags) {
   return `<ul class="work-tags" aria-label="Project topics">${tags.map(tag => `<li>${escapeHTML(tag)}</li>`).join('')}</ul>`;
 }
 
-function workLink(href, label, { symbol = 'arrow', external = false, primary = false } = {}) {
+function workLink(href, label, { symbol = null, external = false, primary = false } = {}) {
   if (!href) return '';
   return `<a class="work-link${primary ? ' work-link-primary' : ''}" href="${escapeHTML(href)}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${primary ? '<span class="work-live-dot" aria-hidden="true"></span>' : ''}${label}${symbol ? icon(symbol) : ''}</a>`;
 }
@@ -35,23 +36,23 @@ function card(project) {
   const href = `#projects/${project.id}`;
   const tile = project.tile ?? {};
   const preview = tile.preview ?? project.preview;
-  const updatedCopy = Boolean(tile.description);
   const media = preview
-    ? `<img src="${escapeHTML(preview.src)}" alt="${escapeHTML(tile.preview?.alt ?? '')}" loading="lazy" decoding="async">`
+    ? `<img src="${escapeHTML(preview.src)}" alt="${escapeHTML(preview.alt ?? '')}" loading="lazy" decoding="async">`
     : `<span class="work-preview-label"><span>${escapeHTML(project.category)}</span><strong>${escapeHTML(project.title)}</strong></span>`;
   return `<article class="work-card" data-work-card="${escapeHTML(project.id)}"${selectedFilter && !filtersFor(project).includes(selectedFilter) ? ' hidden' : ''}>
     <a class="work-card-media" href="${href}" aria-label="Open ${escapeHTML(project.title)} case study">${media}</a>
     <div class="work-card-body">
       <h2>${escapeHTML(tile.title ?? project.title)}</h2>
+      ${tile.tagline ? `<p><strong>${escapeHTML(tile.tagline)}</strong></p>` : ''}
       ${tile.context ? `<p><small>${escapeHTML(tile.context)}</small></p>` : ''}
       <p>${escapeHTML(tile.description ?? project.description)}</p>
       ${tile.update ? `<p>${escapeHTML(tile.update)}</p>` : ''}
       ${tile.note ? `<p><small>${escapeHTML(tile.note)}</small></p>` : ''}
       ${workTags(project.tags)}
       <div class="work-actions">
-        ${workLink(project.liveUrl, updatedCopy ? 'Live demo' : 'Live site', { external: true, primary: true, symbol: updatedCopy ? null : 'external' })}
+        ${workLink(project.liveUrl, 'Live demo', { external: true, primary: true })}
         ${workLink(tile.codeUrl, 'Code', { external: true, symbol: null })}
-        ${workLink(href, 'Case study', { symbol: updatedCopy ? null : 'arrow' })}
+        ${workLink(href, 'Case study')}
       </div>
     </div>
   </article>`;
@@ -97,6 +98,7 @@ function studyBody(study) {
     detailSection('Approach', study.approach),
     detailSection('Key decisions', study.decisions),
     detailSection('Outcome', study.outcome),
+    detailSection('Technical details', study.technical),
     detailSection('Limitations', study.limitations),
     sources,
   ].join('');
@@ -104,8 +106,8 @@ function studyBody(study) {
 
 function projectLinks(project) {
   return `<div class="work-actions">
-    ${workLink(project.liveUrl, 'Live site', { external: true, primary: true, symbol: 'external' })}
-    ${workLink(project.repoUrl, 'Repository', { external: true, symbol: 'external' })}
+    ${workLink(project.liveUrl, 'Live site', { external: true, primary: true })}
+    ${workLink(project.repoUrl, 'Repository', { external: true })}
   </div>`;
 }
 
@@ -121,6 +123,7 @@ function projectDetail(project) {
     <header class="work-heading">
       <div class="work-kicker"><span>Case study</span>${workTags(project.tags)}</div>
       <h1>${escapeHTML(project.title)}</h1>
+      ${project.tile?.tagline ? `<p class="work-result"><strong>${escapeHTML(project.tile.tagline)}</strong></p>` : ''}
       <p>${escapeHTML(project.description)}</p>
       ${projectLinks(project)}
     </header>

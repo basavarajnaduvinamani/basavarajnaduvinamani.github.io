@@ -18,11 +18,12 @@ export const projectContent = [
     repoUrl: visurexRepo,
     liveUrl: 'https://visurex-demo.vercel.app',
     tile: {
-      title: 'VisureX: Smart-glasses shop-floor inspection',
-      context: 'WCTE (Walmart Centre for Tech Excellence), IIT Madras, Oct 2026 to present',
-      description: 'Training-free DINOv2 k-NN beat PatchCore, 0.956 vs 0.924 macro AUROC on 15 MVTec AD categories (k=8, 3 seeds). The check runs in the browser.',
+      title: 'VisureX: AI quality inspection for MSME manufacturing',
+      tagline: 'Built at WCTE, IIT Madras, to improve quality-inspection workflows across its network of 50+ MSMEs.',
+      context: 'WCTE (Walmart Centre for Tech Excellence), IIT Madras, Jul 2026 to present',
+      description: 'Show it a few photos of a good part, then check new photos for defects. A heatmap shows where the problem is, and a blurry photo is sent back for a retake.',
       codeUrl: visurexRepo,
-      preview: { src: `${previews}/tile-visurex.webp`, alt: 'VisureX shop-floor inspection page with a generated washer and browser inspection controls.' },
+      preview: { src: `${previews}/tile-visurex.webp`, alt: 'VisureX quality inspection page with a generated washer and browser inspection controls.' },
     },
     preview: {
       src: `${previews}/visurex-inspection.png`,
@@ -30,7 +31,7 @@ export const projectContent = [
     },
     caseStudy: {
       overview: 'VisureX started with an inherited inspection pipeline at the Walmart Centre for Tech Excellence at IIT Madras. My work covered the benchmark harness, few-shot comparison, browser export and parity, capture checks, and prototype engineering.',
-      problem: 'An inspector may have a handful of normal part photos and few labeled defects. An inspection workflow also needs to show where an anomaly appears and ask for a retake when a photo is unusable.',
+      problem: 'An inspector may have a handful of normal part photos and few labeled defects. A quality-inspection workflow also needs to show where an anomaly appears and ask for a retake when a photo is unusable.',
       approach: [
         'Compared an established DINOv2 patch-neighbor baseline with the inherited PatchCore implementation under the same reference-image budgets.',
         'Built a browser flow for creating a reference bank, calibrating on separate normal photos, and inspecting a new photo.',
@@ -41,8 +42,16 @@ export const projectContent = [
         'Show the operating threshold beside the feature-distance score and heatmap so an inspector can see what drove the result.',
         'Use explicitly labeled generated examples in the public demo.',
       ],
-      outcome: 'With eight references on the MVTec AD benchmark, DINOv2 reached macro AUROC* 0.956 (95% CI 0.927–0.981) versus 0.924 (0.868–0.968) for PatchCore, across 15 categories and three seeds. The paired difference was 0.032 (0.001–0.071). The full-reference comparison was inconclusive. *AUROC measures how well scores rank anomalous images above normal images.',
-      limitations: 'The intervals summarize this fixed benchmark. The public prototype uses generated examples and browser-local records. Factory qualification, owned-part capture, and field adoption are pending.',
+      outcome: 'In tests with only a few reference photos per part, the DINOv2 approach found defects more reliably than the inherited PatchCore pipeline. The prototype runs in the browser and asks for a retake when a photo is blurry. A router that was pre-registered to pick between methods did not work, and it is reported as a negative result.',
+      technical: [
+        'Benchmark: with eight references (k=8) on MVTec AD, DINOv2 k-NN reached macro AUROC* 0.956 (95% CI 0.927–0.981) versus 0.924 (0.868–0.968) for PatchCore, across 15 categories and three seeds. The paired difference was 0.032 (0.001–0.071). The full-reference comparison was inconclusive. The DINOv2 method follows AnomalyDINO (Damm et al., WACV 2025).',
+        'Browser export: the DINOv2 ONNX model running in WebAssembly matched the reference on 20 of 20 parity checks, at a median 361 ms on a laptop CPU. The PatchCore ONNX export matched on 261 of 261 checks at 163–168 ms on CPU.',
+        'Capture check: a blurry photo is rejected and the user is asked to retake it.',
+        'Glasses bridge: a Kotlin bridge for Ray-Ban Meta glasses (toolkit 1.0.1) has 23 unit tests and an emulator test. It has not been run on glasses.',
+        'Negative result: the pre-registered router failed.',
+        '*AUROC measures how well scores rank anomalous images above normal images.',
+      ],
+      limitations: 'The intervals summarize this fixed benchmark. The public prototype uses generated examples and browser-local records. Factory qualification, owned-part capture, field adoption and use on glasses are pending.',
       sources: [
         { label: 'Comparison results and intervals', url: `${visurexRepo}/blob/main/docs/sprint/S2_RESULTS.md` },
         { label: 'Browser parity record', url: `${visurexRepo}/blob/main/docs/step1/browser_parity.json` },
@@ -83,7 +92,8 @@ export const projectContent = [
     liveUrl: 'https://counterprior.vercel.app',
     tile: {
       title: 'CounterPrior: Do multimodal models know when they are guessing?',
-      context: 'AI4Bharat, IIT Madras (Prof. Mitesh Khapra), Nov 2025 - Present',
+      tagline: 'How do machines see? A workbench for tinkering with open-weight multimodal models and testing whether they know when they’re guessing.',
+      context: 'LLaVA work at AI4Bharat, IIT Madras (Prof. Mitesh Khapra), Nov 2025 to Feb 2026. Extended to audio and video in Nov 2026.',
       description: 'On Qwen2.5-Omni-3B audio, adding a layer-wise probe improved AUROC by +0.101 (95% CI +0.008 to +0.188) over a baseline built from the model’s own Yes/No scores. On LLaVA, the probe did not beat confidence, reported as a negative result.',
       codeUrl: counterpriorRepo,
       preview: { src: `${previews}/tile-counterprior.webp`, alt: 'CounterPrior research homepage introducing its evaluation of confidence and hidden-state probes.' },
@@ -93,7 +103,7 @@ export const projectContent = [
       alt: 'CounterPrior research site showing the study sections and held-out sound findings.',
     },
     caseStudy: {
-      overview: 'The LLaVA image work began at AI4Bharat, IIT Madras, from November 2025 to February 2026. In November 2026 I extended it to audio and video with the Gemma and Qwen experiments.',
+      overview: 'The LLaVA image work began at AI4Bharat, IIT Madras, from November 2025 to February 2026. In November 2026 I extended it to audio and video with the Gemma 4 E2B and Qwen2.5-Omni-3B experiments.',
       problem: 'A plausible answer can come from language patterns even when the image, audio, or video provides contrary evidence. A useful evaluation has to test what changes when the input changes.',
       approach: [
         'Used absent-object questions on POPE, an object hallucination benchmark, to compare hidden-state probes with model confidence.',
@@ -105,7 +115,7 @@ export const projectContent = [
         'Keep examples where the intervention hurts alongside examples where it helps.',
         'Release the report, controls, and example explorer with links back to evidence.',
       ],
-      outcome: 'On held-out image questions, the LLaVA probe trailed model confidence and steering did not beat the controls. A Qwen sound probe added ranking signal, but the filter exceeded its preset recall-loss cap and was not shipped.',
+      outcome: 'On held-out image questions, the LLaVA probe trailed model confidence and steering did not beat the controls. A Qwen sound probe added ranking signal, but the filter exceeded its preset recall-loss cap and was not shipped. The Gemma 4 E2B audio-video comparison was inconclusive (underpowered).',
       limitations: 'The Gemma sound and video comparisons and the Qwen video comparison were underpowered. They contained 15, 24, and 26 false Yes cases respectively, below the preregistered minimum of 40 per comparison.',
       sources: [
         { label: 'Verified release results and intervals', url: `${counterpriorRepo}/tree/v2.0-final#counterprior` },
@@ -142,6 +152,8 @@ export const projectContent = [
     repoUrl: humanAuthRepo,
     liveUrl: 'https://humanauth-id.vercel.app',
     tile: {
+      tagline: 'Built to verify real people in banking, government services and other onboarding: face, voice and document checks that run on the device.',
+      context: 'Supported by an ART-Park (IISc) and KSCST grant',
       preview: { src: `${previews}/tile-humanauth.webp`, alt: 'HumanAuth homepage showing on-device identity checks and a bundled sample verification receipt.' },
     },
     preview: {
@@ -149,10 +161,11 @@ export const projectContent = [
       alt: 'HumanAuth sample session with a rejected synthetic specimen and an explanation of the document check.',
     },
     caseStudy: {
-      overview: 'HumanAuth grew out of a team undergraduate project. The browser implementation runs its checks locally and shows the individual signals behind a decision.',
+      overview: 'HumanAuth grew out of a team project supported by an ART-Park (IISc) grant with KSCST support. The browser implementation runs its checks locally and shows the individual signals behind a decision.',
       problem: 'An identity flow can collect sensitive inputs and still leave a user with only a pass or fail. This prototype explores a local flow with an explanation someone can inspect.',
       approach: [
         'Run face liveness, a document check, and enrolled-speaker matching in a browser worker.',
+        'Match voice with MFCC features and a per-speaker Gaussian mixture model, with an optional Deep4SNet anti-spoof check.',
         'Check the browser implementation against Python fixture decisions and inspect the sample flow’s network requests.',
         'Offer a fictional sample so the flow can be tried without providing personal media.',
       ],
@@ -161,7 +174,7 @@ export const projectContent = [
         'Include scores, decisions, timings, and model identifiers in the receipt. Exclude images and audio.',
         'Show rejection and its cause in the public sample.',
       ],
-      outcome: 'The browser reproduced the Python fixture decisions. The fictional sample is rejected because the document check fails, and the receipt records the reason.',
+      outcome: 'The browser reproduced the Python fixture decisions. The fictional sample is rejected because the document check fails, and the receipt records the reason. The project has 76 Python tests and 21 browser tests.',
       limitations: 'Fixture agreement checks implementation parity. The document model transferred poorly in held-out testing, the voice sample is an enrolled-speaker comparison, and the fusion threshold has not been calibrated on held-out data.',
       sources: [
         { label: 'Evidence and limits', url: 'https://humanauth-id.vercel.app/evidence' },
@@ -179,6 +192,9 @@ export const projectContent = [
     description: 'A teacher-facing review tool that grades short answers against a rubric, quotes the student’s evidence, and defers uncertain marks.',
     repoUrl: secondReadRepo,
     liveUrl: 'https://secondread-grader.onrender.com',
+    tile: {
+      tagline: 'Built so teachers can spend more time teaching and less time checking.',
+    },
     preview: {
       src: `${previews}/second-read-review.png`,
       alt: 'Second Read teacher review screen with a synthetic marked answer beside rubric criteria. The dry-run banner identifies scripted grading.',
