@@ -5,7 +5,7 @@ export const profile = {
   linkedin: 'https://www.linkedin.com/in/basavarajnaduvinamani/',
   email: 'basavarajnaduvinamani15@gmail.com',
   // Public Web3Forms access key (safe to publish). Empty = the form falls back to opening an email draft.
-  contactFormKey: '',
+  contactFormKey: '3c54a050-e0fb-4150-9573-77787da47770',
   roles: ['AI Researcher', 'ML Engineer', 'Builder'],
   skills: [
     ['Python', 'python', '#3776ab'], ['PyTorch', 'pytorch', '#ee4c2c'],
