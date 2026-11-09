@@ -84,7 +84,6 @@ function contactPage() {
     <div class="contact-socials">
       <h2>Connect with me on socials</h2>
       ${socialLinks()}
-      <a class="contact-email" href="mailto:${profile.email}">${profile.email}</a>
     </div>
   </section>`;
 }
