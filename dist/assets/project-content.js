@@ -83,7 +83,7 @@ export const projectContent = [
     liveUrl: 'https://counterprior.vercel.app',
     tile: {
       title: 'CounterPrior: Do multimodal models know when they are guessing?',
-      context: 'Project ongoing since Nov 2025. Began at AI4Bharat, IIT Madras (Prof. Mitesh Khapra), with independent follow-up.',
+      context: 'AI4Bharat, IIT Madras (Prof. Mitesh Khapra), Nov 2025 - Present',
       description: 'On Qwen2.5-Omni-3B audio, adding a layer-wise probe improved AUROC by +0.101 (95% CI +0.008 to +0.188) over a baseline built from the model’s own Yes/No scores. On LLaVA, the probe did not beat confidence, reported as a negative result.',
       codeUrl: counterpriorRepo,
       preview: { src: `${previews}/tile-counterprior.webp`, alt: 'CounterPrior research homepage introducing its evaluation of confidence and hidden-state probes.' },
@@ -216,7 +216,7 @@ export const projectContent = [
     tile: {
       context: '1st place, HealthTech AI Hackathon, University of Birmingham, Mar 2026',
       description: 'A clinician tool that finds glucose spikes and dips over 14 days of CGM data and links them to six lifestyle pillars.',
-      update: 'Now being tested with [HEALTH PARTNER] on 800+ patients, with the aim of contributing to [REGIONAL HEALTH BODY].',
+      update: 'Now being tested with Gillvray Health on 800+ patients.',
       note: 'Interface not shown. Built on the organisers’ synthetic data.',
       codeUrl: spikesRepo,
       preview: { src: `${previews}/spikes-cover.webp`, alt: 'SPIKES project cover for the HealthTech AI Hackathon at the University of Birmingham.' },
@@ -251,7 +251,7 @@ export const projectContent = [
     tile: {
       context: 'Winner, Maxwell Data Challenge, Imperial College London, Jun 2026',
       description: 'An ESG analyst copilot that compares company materiality scores against peer and FTSE 100 benchmarks and sends missing evidence to human review.',
-      update: 'Maxwell is now building versions of it for its clients, including [CLIENT NAMES].',
+      update: 'Maxwell is now building versions of it for its clients.',
       note: 'Interface not shown. Built on the organisers’ synthetic data.',
       codeUrl: esgRepo,
       preview: { src: `${previews}/esg-cover.webp`, alt: 'Transparent ESG Intelligence project cover for the Maxwell Data Challenge at Imperial College London.' },
