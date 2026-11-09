@@ -35,12 +35,12 @@ export const experience = [
 export const education = [
   { school: 'IIT Madras', degree: 'Master’s in Data Science and AI', period: '2025 to 2027', logo: 'iitm-emblem.png', url: 'https://www.iitm.ac.in/' },
   { school: 'University of Birmingham', degree: 'Master’s in Data Science and AI, exchange semester', period: '2026 to 2027', logo: 'birmingham.png', url: 'https://www.birmingham.ac.uk/' },
-  { school: 'Dayananda Sagar University', degree: 'Bachelor’s in Computer Engineering', period: '2021 to 2025', logo: 'dsu.png', url: 'https://www.dsu.edu.in/' },
+  { school: 'Dayananda Sagar University', degree: 'Bachelor’s in Computer Science and Engineering', period: '2021 to 2025', logo: 'dsu.png', url: 'https://www.dsu.edu.in/' },
 ];
 
 export const achievements = [
   { title: 'Maxwell Data Challenge', organization: 'Imperial College London', result: 'Winner', year: '2026', description: 'Transparent ESG Intelligence: ESG scores that show the evidence behind them.' },
   { title: 'UKFinnovator', organization: 'Imperial College London', result: 'National finalist', year: '2026', description: 'One of the top 100 students across the UK.' },
-  { title: 'HealthTech AI Hackathon', organization: 'University of Birmingham', result: '1st place', year: '2026', description: 'SPIKES: finds glucose spikes and dips in CGM data so clinicians see who needs attention first.' },
-  { title: 'HumanAuth', organization: 'ART-Park (IISc) and KSCST', result: 'State grant awardee', year: '2024 to 2025', description: 'Funding for an identity verification system that runs on the device.' },
+  { title: 'HealthTech AI Hackathon', organization: 'University of Birmingham', result: '1st place', year: '2026', description: 'SPIKES: links glucose spikes to daily habits, so clinicians see what needs attention first.' },
+  { title: 'HumanAuth', organization: 'ART-Park (IISc) and KSCST', result: 'State grant awardee', year: '2024 to 2025', description: 'Karnataka State Government funding for identity verification that runs on the device.' },
 ];

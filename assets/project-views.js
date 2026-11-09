@@ -1,4 +1,4 @@
-import { projectContent } from './project-content.js?v=nda-1';
+import { projectContent } from './project-content.js?v=fact-1';
 
 const iconPaths = {
   arrow: '<path d="M5 12h14m-6-6 6 6-6 6"/>',
