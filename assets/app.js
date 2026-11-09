@@ -66,35 +66,73 @@ function homePage() {
 }
 
 function contactPage() {
+  const topics = ['Full-time role', 'Part-time or freelance work', 'Internship', 'Research collaboration', 'Something else'];
   return `<section class="contact-view">
     <div class="contact-form-card">
-      <h1>Send a message</h1>
-      <p class="extras-intro">Write about research, an engineering role or one of the projects. The form opens a draft in your email app.</p>
+      <h1>Let's talk</h1>
+      <p class="extras-intro">Fill out this form and I'll get back to you within 24 hours.</p>
       <form class="contact-form">
-        <label>Name <input name="name" autocomplete="name" required maxlength="80"></label>
-        <label>Email <input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+        <label>Full name <input name="name" autocomplete="name" required maxlength="80"></label>
+        <label>Email address <input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+        <label>What is this about? <select name="topic" required><option value="" disabled selected>Choose one</option>${topics.map(topic => `<option>${topic}</option>`).join('')}</select></label>
         <label>Message <textarea name="message" required maxlength="1000" rows="5"></textarea></label>
-        <button class="pill light" type="submit">Open email draft</button>
+        <input type="checkbox" name="botcheck" class="contact-trap" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="pill light" type="submit">Send message</button>
         <p class="contact-status" role="status"></p>
       </form>
     </div>
     <div class="contact-socials">
-      <p>Or reach me directly</p>
+      <h2>Connect with me on socials</h2>
       ${socialLinks()}
-      <a class="contact-email" href="mailto:${profile.email}">${profile.email}</a>
     </div>
   </section>`;
 }
 
 function bindContact() {
   const form = main.querySelector('.contact-form');
-  form.addEventListener('submit', event => {
+  const status = form.querySelector('.contact-status');
+  const button = form.querySelector('button[type="submit"]');
+  const fallback = `Could not send from here. Please email me at ${profile.email}.`;
+  form.addEventListener('submit', async event => {
     event.preventDefault();
     const fields = new FormData(form);
-    const subject = encodeURIComponent(`Portfolio inquiry from ${fields.get('name')}`);
-    const body = encodeURIComponent(`${fields.get('message')}\n\nFrom ${fields.get('name')} (${fields.get('email')})`);
-    form.querySelector('.contact-status').textContent = 'Finish and send the draft in your email app.';
-    location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
+    if (fields.get('botcheck')) return;
+    if (!profile.contactFormKey) {
+      const subject = encodeURIComponent(`[${fields.get('topic')}] Portfolio message from ${fields.get('name')}`);
+      const body = encodeURIComponent(`${fields.get('message')}\n\nFrom ${fields.get('name')} (${fields.get('email')})`);
+      status.textContent = `Opening your email app. If nothing opens, email me at ${profile.email}.`;
+      location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
+      return;
+    }
+    button.disabled = true;
+    status.textContent = 'Sending...';
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: profile.contactFormKey,
+          subject: `[${fields.get('topic')}] Portfolio message from ${fields.get('name')}`,
+          topic: fields.get('topic'),
+          from_name: 'Portfolio contact form',
+          name: fields.get('name'),
+          email: fields.get('email'),
+          replyto: fields.get('email'),
+          message: fields.get('message'),
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (response.ok && result.success) {
+        form.reset();
+        status.textContent = 'Message sent. Thanks, I will get back to you within 24 hours.';
+      } else {
+        status.textContent = fallback;
+      }
+    } catch {
+      status.textContent = fallback;
+    } finally {
+      button.disabled = false;
+    }
   });
 }
 
