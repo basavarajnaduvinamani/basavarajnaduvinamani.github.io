@@ -31,7 +31,7 @@ export const projectContent = [
     },
     caseStudy: {
       overview: 'VisureX started with an inherited inspection pipeline at the Walmart Centre for Tech Excellence at IIT Madras. My work covered the benchmark harness, few-shot comparison, browser export and parity, capture checks, and prototype engineering.',
-      problem: 'An inspector may have a handful of normal part photos and few labeled defects. A quality-inspection workflow also needs to show where an anomaly appears and ask for a retake when a photo is unusable.',
+      problem: 'A quality engineer may have a handful of normal part photos and few labeled defects. A quality-inspection workflow also needs to show where an anomaly appears and ask for a retake when a photo is unusable.',
       approach: [
         'Compared an established DINOv2 patch-neighbor baseline with the inherited PatchCore implementation under the same reference-image budgets.',
         'Built a browser flow for creating a reference bank, calibrating on separate normal photos, and inspecting a new photo.',
@@ -39,7 +39,7 @@ export const projectContent = [
       ],
       decisions: [
         'Keep reference photos and threshold calibration separate to avoid tuning a threshold on the memory bank.',
-        'Show the operating threshold beside the feature-distance score and heatmap so an inspector can see what drove the result.',
+        'Show the operating threshold beside the feature-distance score and heatmap so a quality engineer can see what drove the result.',
         'Use explicitly labeled generated examples in the public demo.',
       ],
       outcome: 'In tests with only a few reference photos per part, the DINOv2 approach found defects more reliably than the inherited PatchCore pipeline. The prototype runs in the browser and asks for a retake when a photo is blurry. A router that was pre-registered to pick between methods did not work, and it is reported as a negative result.',
