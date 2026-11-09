@@ -104,3 +104,9 @@
 @media (prefers-reduced-motion: reduce) {
   .note-row:hover { transform: none; }
 }
+
+.whois-hook{font-size:1.15em}
+.home-quote{margin:0;padding:8px 0;text-align:center}
+.home-quote blockquote{margin:0;font-family:Yellowtail,cursive;font-weight:400;font-size:clamp(28px,4.4vw,42px);line-height:1.25;color:var(--text)}
+.home-quote figcaption{margin-top:12px;font-size:14px;letter-spacing:.02em;color:var(--muted,inherit);opacity:.8}
+.home-quote figcaption:before{content:'\2014\00a0'}
