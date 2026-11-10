@@ -1,6 +1,7 @@
 const publicCalendar = 'https://github-contributions-api.jogruber.de/v4/basavarajnaduvinamani?y=last';
 const savedCalendar = '/assets/github-activity.json';
 const dayMs = 86_400_000;
+const yearDays = 365;
 const dayFormat = new Intl.DateTimeFormat('en', { dateStyle: 'medium', timeZone: 'UTC' });
 const monthFormat = new Intl.DateTimeFormat('en', { month: 'short', timeZone: 'UTC' });
 const winterStart = Date.UTC(2026, 9, 1);
@@ -10,10 +11,11 @@ export const winterPeriod = dayFormat.formatRange(winterStart, winterEnd);
 let calendarRequest;
 
 async function readCalendar(url) {
-  const response = await fetch(url, { cache: 'no-cache', signal: AbortSignal.timeout(4500) });
+  const response = await fetch(url, { cache: 'no-store', signal: AbortSignal.timeout(8000) });
   if (!response.ok) throw new Error('Contribution calendar unavailable');
   const { contributions } = await response.json();
-  if (!Array.isArray(contributions) || ![365, 366].includes(contributions.length)) {
+  // The live API returns 365 to 371 days (it includes today and may start a few days early).
+  if (!Array.isArray(contributions) || contributions.length < yearDays || contributions.length > yearDays + 7) {
     throw new Error('Incomplete contribution calendar');
   }
 
@@ -24,7 +26,8 @@ async function readCalendar(url) {
     Number.isInteger(day.level) && day.level >= 0 && day.level <= 4
   );
   if (!complete) throw new Error('Invalid contribution days');
-  return contributions;
+  // Keep exactly the latest 365 days so the grid stays the same size every day.
+  return contributions.slice(-yearDays);
 }
 
 async function loadCalendar() {
