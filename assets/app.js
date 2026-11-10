@@ -1,4 +1,4 @@
-import { renderActivity, winterPeriod } from './activity.js?v=winter-2';
+import { renderActivity, winterPeriod } from './activity.js?v=live-1';
 import { profile, experience, education, achievements } from './data.js?v=fact-3';
 import { renderWorkView, bindWorkView } from './project-views.js?v=fact-1';
 import { renderNotes, bindNotes } from './notes.js';
