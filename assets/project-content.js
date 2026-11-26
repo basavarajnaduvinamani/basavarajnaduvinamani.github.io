@@ -19,7 +19,7 @@ export const projectContent = [
     liveUrl: 'https://visurex-demo.vercel.app',
     tile: {
       title: 'VisureX: AI quality inspection for MSME manufacturing',
-      tagline: 'Built at WCTE, IIT Madras, to improve quality-inspection workflows across its network of 50+ MSMEs.',
+      tagline: 'Built at WCTE, IIT Madras. Live pilot since Oct 2026 with WCTE engineers at 3 of its 53 MSMEs, cutting inspection cost by about 80%.',
       context: 'WCTE (Walmart Centre for Tech Excellence), IIT Madras, Jul 2026 to present',
       description: 'Show it a few photos of a good part, then check new photos for defects. A heatmap shows where the problem is, and a blurry photo is sent back for a retake.',
       codeUrl: visurexRepo,
@@ -30,7 +30,7 @@ export const projectContent = [
       alt: 'VisureX inspection interface showing a GOOD result, score, and threshold for a generated normal washer.',
     },
     caseStudy: {
-      overview: 'VisureX builds on an inspection pipeline I inherited at the Walmart Centre for Tech Excellence, IIT Madras. I built the benchmark, the few-shot comparison, the browser export and its parity checks, the photo-quality check and the prototype.',
+      overview: 'VisureX is AI quality inspection for small manufacturers at the Walmart Centre for Tech Excellence, IIT Madras. I worked on the PatchCore pipeline with the team, brought in the training-free DINOv2 method, and built the benchmark, the browser export and its parity checks, the photo-quality check and the prototype. It has been in a live pilot with WCTE engineers at 3 of WCTE\'s 53 MSMEs since Oct 2026.',
       problem: 'A small manufacturer may have only a handful of photos of good parts and few examples of defects. Inspection also has to show where a defect is and ask for a new photo when one is unusable.',
       approach: [
         'Compared a DINOv2 nearest-neighbour method with the existing PatchCore pipeline, giving both the same number of reference photos.',
@@ -42,7 +42,7 @@ export const projectContent = [
         'Show the operating threshold beside the feature-distance score and heatmap so a quality engineer can see what drove the result.',
         'Label every generated example in the public demo.',
       ],
-      outcome: 'In tests with only a few reference photos per part, the DINOv2 approach found defects more reliably than the existing PatchCore pipeline. The prototype runs in the browser and asks for a retake when a photo is blurry. A router pre-registered to pick between the two methods did not work; it is reported as a negative result.',
+      outcome: 'In tests with only a few reference photos per part, the DINOv2 approach found defects more reliably than the existing PatchCore pipeline. The prototype runs in the browser and asks for a retake when a photo is blurry. A router pre-registered to pick between the two methods did not work; it is reported as a negative result. In the live pilot at 3 MSMEs, inspection cost per MSME fell from Rs 2.5 to 3 lakh a month to Rs 50 to 60k (about 80%), checks take 3 to 4 s instead of 10 s, 96% of pass/fail calls are correct and the miss rate is under 1%.',
       technical: [
         'Benchmark: with eight references (k=8) on MVTec AD, DINOv2 k-NN reached macro AUROC* 0.956 (95% CI 0.927–0.981) versus 0.924 (0.868–0.968) for PatchCore, across 15 categories and three seeds. The full-reference comparison was inconclusive. The DINOv2 method follows AnomalyDINO (Damm et al., WACV 2025).',
         'Browser export: the DINOv2 ONNX model running in WebAssembly matched the reference on 20 of 20 parity checks, at a median 361 ms on a laptop CPU. The PatchCore ONNX export matched on 261 of 261 checks at 163–168 ms on CPU.',
@@ -51,7 +51,7 @@ export const projectContent = [
         'Negative result: the pre-registered router failed.',
         '*AUROC measures how well scores rank anomalous images above normal images.',
       ],
-      limitations: 'The intervals summarize this fixed benchmark. The public prototype uses generated examples and browser-local records. Factory qualification, owned-part capture, field adoption and use on glasses are pending.',
+      limitations: 'The intervals summarize this fixed benchmark. The public prototype uses generated examples and browser-local records; pilot data stays with WCTE and the factories. Rollout to the remaining MSMEs is phased, and use on glasses is still being tested.',
       sources: [
         { label: 'Comparison results and intervals', url: `${visurexRepo}/blob/main/docs/sprint/S2_RESULTS.md` },
         { label: 'Browser parity record', url: `${visurexRepo}/blob/main/docs/step1/browser_parity.json` },
